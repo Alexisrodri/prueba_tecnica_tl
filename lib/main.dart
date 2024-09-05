@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:prueba_tecnica_tl/screens/screens.dart';
+
+import 'config/config.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,7 +11,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-        debugShowCheckedModeBanner: false, home: HomeScreen());
+    final theme = MediaQuery.of(context).platformBrightness;
+    return MaterialApp.router(
+      routerConfig: appRouter,
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme().getTheme(theme),
+    );
   }
 }

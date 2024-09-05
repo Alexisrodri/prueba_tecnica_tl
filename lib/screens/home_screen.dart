@@ -1,41 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:prueba_tecnica_tl/screens/screens.dart';
+import 'package:prueba_tecnica_tl/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: SafeArea(
-      child: Stack(children: [
-        // Image.asset()
-        Container(
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(colors: [
-            Color(0xfff5fafa),
-            Color(0xffebf0f5),
-            Color(0xffebebf0),
-          ], tileMode: TileMode.mirror)),
-          child: Scaffold(
-            drawer: const Drawer(),
-            appBar: AppBar(
-              title: const Image(
-                image: AssetImage('assets/images/logo-tl.png'),
-                fit: BoxFit.cover,
-                height: 30,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        drawer: const Drawer(),
+        appBar: customAppbar(),
+        body: Stack(
+          children: [
+            Container(
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xFFF5FAFA),
+                    Color(0xFFF5FAFA),
+                    Color(0xffebebf0),
+                  ],
+                ),
               ),
-              actions: const [
-                Padding(
-                  padding: EdgeInsets.all(10),
-                  child: CircleAvatar(
-                    child: Text('AR'),
-                  ),
-                )
-              ],
+              child: const DashboardScreen(),
             ),
-          ),
+          ],
         ),
-      ]),
-    ));
+      ),
+    );
   }
 }
