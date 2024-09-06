@@ -7,7 +7,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).size.width / 5);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -44,23 +43,11 @@ class HomeScreen extends StatelessWidget {
               // right: 20,
               left: 80,
               // width: double.infinity,
-              child: Flex(
-                direction: Axis.horizontal,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text('Prueba de desarrollo:',
-                      style: TextStyle(color: Colors.black)),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    'Alex Avila',
-                    style: TextStyle(
-                        color: Colors.blueAccent, fontWeight: FontWeight.bold),
-                  ),
-                ],
+              child: Text(
+                'Smart Contracts Suite - Un producto de Todolegal SAS - 2023',
+                style: TextStyle(fontSize: 12, color: Colors.grey),
               ),
-            ),
+            )
           ],
         ),
       ),

@@ -1,3 +1,3 @@
 export './home_screen.dart';
-export './sign_document.dart';
+export 'signs_documents.dart';
 export './dashboard.dart';

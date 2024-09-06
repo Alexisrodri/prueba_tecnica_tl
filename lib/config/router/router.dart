@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
-import 'package:prueba_tecnica_tl/screens/home_screen.dart';
-import 'package:prueba_tecnica_tl/screens/sign_document.dart';
+
+import '../../screens/screens.dart';
 
 final appRouter = GoRouter(initialLocation: '/Home', routes: [
   GoRoute(
@@ -9,6 +9,6 @@ final appRouter = GoRouter(initialLocation: '/Home', routes: [
   ),
   GoRoute(
     path: '/sign-documents',
-    builder: (context, state) => const SignDocument(),
+    builder: (context, state) => const SingDocumentScreen(),
   ),
 ]);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:prueba_tecnica_tl/widgets/custom_list_tile.dart';
+import 'package:prueba_tecnica_tl/widgets/customs/custom_list_tile.dart';
 import '../widgets/widgets.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -40,7 +40,7 @@ class DashboardScreen extends StatelessWidget {
                 'Firma documentos electrónicos y solicita la firma de terceros.',
             icon: Icons.document_scanner_outlined,
             secondIcon: Icons.chevron_right_rounded,
-            onPress: () => context.go('/sign-documents'),
+            onPress: () => context.push('/sign-documents'),
           ),
           const CustomListTile(
             title: 'Solicitudes de Acceso a Información',
