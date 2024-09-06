@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prueba_tecnica_tl/widgets/custom_pdf_viewer.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class SignDocument extends StatelessWidget {
@@ -6,21 +7,17 @@ class SignDocument extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return const SafeArea(
       child: Scaffold(
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('Hola Mundo'),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 2,
-                width: MediaQuery.of(context).size.width / 2,
-                child: SfPdfViewer.asset(
-                  'assets/pdf/Alex-AR-CV.pdf',
-                  canShowScrollHead: false,
-                ),
-              )
+              Text('Hola Mundo'),
+              // CustomPdfViewer(src: 'assets/pdf/Alex-AR-CV.pdf')
+              CustomPdfViewer(
+                  src:
+                      'https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf')
             ],
           ),
         ),
