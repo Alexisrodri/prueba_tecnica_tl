@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:prueba_tecnica_tl/widgets/customs/custom_list_tile.dart';
 import '../widgets/widgets.dart';
 
 class DashboardScreen extends StatelessWidget {

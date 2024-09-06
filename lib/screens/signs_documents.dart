@@ -98,7 +98,7 @@ class _SingDocumentScreenState extends State<SingDocumentScreen>
             child: TabBarView(
               controller: _tabController,
               children: const [
-                Center(child: Text('Documentos')),
+                LoadDocuments(),
                 BuildSignersTab(),
                 Center(child: Text('Personalizaciones')),
                 Center(child: Text('Resumen')),
