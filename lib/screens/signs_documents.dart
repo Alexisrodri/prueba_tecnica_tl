@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:prueba_tecnica_tl/widgets/documents/personalization_document.dart';
 import 'package:prueba_tecnica_tl/widgets/widgets.dart';
 
 class SingDocumentScreen extends StatefulWidget {
@@ -28,7 +29,7 @@ class _SingDocumentScreenState extends State<SingDocumentScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 15),
+            padding: const EdgeInsets.symmetric(vertical: 5),
             child: Row(
               children: [
                 IconButton(
@@ -100,7 +101,7 @@ class _SingDocumentScreenState extends State<SingDocumentScreen>
               children: const [
                 LoadDocuments(),
                 BuildSignersTab(),
-                Center(child: Text('Personalizaciones')),
+                PersonalizationDocument(),
                 Center(child: Text('Resumen')),
               ],
             ),

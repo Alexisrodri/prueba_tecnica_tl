@@ -18,8 +18,6 @@ class DashboardScreen extends StatelessWidget {
               text: 'Dashboard',
               color: Color(0xFF919196),
               secondText: 'Bienvenido Paul',
-              size: 26,
-              weight: FontWeight.w500,
               secondColor: Colors.blueAccent,
             ),
           ),

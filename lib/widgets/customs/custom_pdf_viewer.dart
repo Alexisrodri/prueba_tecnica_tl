@@ -20,12 +20,12 @@ class _CustomPdfViewerState extends State<CustomPdfViewer> {
     return Center(
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 0.69,
-          maxHeight: MediaQuery.of(context).size.height * 0.4,
+          maxWidth: MediaQuery.of(context).size.width * 0.6,
+          maxHeight: MediaQuery.of(context).size.height * 0.38,
         ),
         child: Stack(
           children: [
-            SfPdfViewer.network(
+            SfPdfViewer.asset(
               widget.src,
               controller: _pdfViewerController,
               pageLayoutMode: PdfPageLayoutMode.single,
@@ -53,7 +53,9 @@ class _CustomPdfViewerState extends State<CustomPdfViewer> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
-                  _totalPages > 0 ? '$_currentPage/$_totalPages' : '',
+                  _totalPages & _currentPage > 0
+                      ? '$_currentPage/$_totalPages'
+                      : '',
                   style: const TextStyle(fontSize: 16),
                 ),
               ),
