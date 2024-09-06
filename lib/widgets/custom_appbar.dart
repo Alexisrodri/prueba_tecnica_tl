@@ -24,7 +24,12 @@ AppBar customAppbar() {
       Padding(
         padding: EdgeInsets.all(10),
         child: CircleAvatar(
-          child: Text('AR'),
+          backgroundColor: Colors.transparent,
+          child: Image(
+            image: AssetImage('assets/images/avatar.png'),
+            fit: BoxFit.cover,
+            height: 30,
+          ),
         ),
       ),
     ],

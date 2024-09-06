@@ -2,13 +2,13 @@
 import 'package:flutter/material.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class CustomItemBottom extends StatelessWidget {
+class CustomListTile extends StatelessWidget {
   final String title;
   final String subtitle;
   final IconData icon;
   final IconData secondIcon;
 
-  const CustomItemBottom(
+  const CustomListTile(
       {super.key,
       required this.title,
       required this.subtitle,
@@ -18,31 +18,33 @@ class CustomItemBottom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
-      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       decoration: BoxDecoration(
         border: Border.all(
           color: Colors.blueAccent,
-          width: 0.2,
-          style: BorderStyle.solid,
+          width: 0.4,
         ),
         borderRadius: const BorderRadius.all(Radius.circular(8)),
         color: Colors.white,
       ),
       child: ListTile(
-        dense: true,
-        minLeadingWidth: 10,
-        titleAlignment: ListTileTitleAlignment.top,
         leading: Icon(icon),
-        title: Text(
-          title,
-          style: const TextStyle(
-            // fontSize: 1,
-            color: Color(0xFF6C7178),
-            fontWeight: FontWeight.bold,
+        title: Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: Text(
+            title,
+            style: const TextStyle(
+              fontSize: 14,
+              color: Colors.black54,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
-        subtitle: Text(subtitle),
+        subtitle: Text(
+          subtitle,
+          style: const TextStyle(fontSize: 12),
+        ),
         trailing: Icon(secondIcon),
       ),
     );
