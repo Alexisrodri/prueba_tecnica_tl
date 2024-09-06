@@ -7,13 +7,15 @@ class CustomListTile extends StatelessWidget {
   final String subtitle;
   final IconData icon;
   final IconData secondIcon;
+  final void Function()? onPress;
 
   const CustomListTile(
       {super.key,
       required this.title,
       required this.subtitle,
       required this.icon,
-      required this.secondIcon});
+      required this.secondIcon,
+      this.onPress});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,10 @@ class CustomListTile extends StatelessWidget {
         color: Colors.white,
       ),
       child: ListTile(
-        leading: Icon(icon),
+        leading: Icon(
+          icon,
+          color: Colors.blue,
+        ),
         title: Padding(
           padding: const EdgeInsets.only(bottom: 8.0),
           child: Text(
@@ -45,7 +50,11 @@ class CustomListTile extends StatelessWidget {
           subtitle,
           style: const TextStyle(fontSize: 12),
         ),
-        trailing: Icon(secondIcon),
+        trailing: Icon(
+          secondIcon,
+          color: Colors.blue,
+        ),
+        onTap: onPress,
       ),
     );
   }

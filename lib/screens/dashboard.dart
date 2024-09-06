@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:prueba_tecnica_tl/widgets/custom_item_bottom.dart';
+import 'package:go_router/go_router.dart';
+import 'package:prueba_tecnica_tl/config/router/router.dart';
+import 'package:prueba_tecnica_tl/widgets/custom_list_tile.dart';
 
 import '../widgets/widgets.dart';
 
@@ -34,12 +36,13 @@ class DashboardScreen extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const CustomListTile(
+          CustomListTile(
             title: 'Firmar Documentos',
             subtitle:
                 'Firma documentos electrónicos y solicita la firma de terceros.',
             icon: Icons.document_scanner_outlined,
             secondIcon: Icons.chevron_right_rounded,
+            onPress: () => context.go('/sign-documents'),
           ),
           const CustomListTile(
             title: 'Solicitudes de Acceso a Información',

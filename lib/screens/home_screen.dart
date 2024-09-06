@@ -15,6 +15,15 @@ class HomeScreen extends StatelessWidget {
         appBar: customAppbar(),
         body: Stack(
           children: [
+            Positioned(
+              bottom: 10,
+              left: MediaQuery.of(context).size.width / 5,
+              child: Image.asset(
+                'assets/images/fondo.png',
+                width: 250,
+                colorBlendMode: BlendMode.hue,
+              ),
+            ),
             Container(
               width: double.infinity,
               decoration: const BoxDecoration(
@@ -24,19 +33,11 @@ class HomeScreen extends StatelessWidget {
                   colors: [
                     Color(0xFFF5FAFA),
                     Color(0xFFF5FAFA),
-                    Color(0xffebebf0),
+                    Color(0xE5FFFFFF),
                   ],
                 ),
               ),
               child: const DashboardScreen(),
-            ),
-            Positioned(
-              bottom: 50,
-              left: MediaQuery.of(context).size.width / 5,
-              child: Image.asset(
-                'assets/images/fondo.png',
-                width: 250,
-              ),
             ),
             const Positioned(
               bottom: 20,
@@ -47,7 +48,8 @@ class HomeScreen extends StatelessWidget {
                 direction: Axis.horizontal,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text('Prueba de desarrollo:'),
+                  Text('Prueba de desarrollo:',
+                      style: TextStyle(color: Colors.black)),
                   SizedBox(
                     width: 10,
                   ),
