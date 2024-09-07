@@ -21,11 +21,15 @@ class CustomInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
-          style: const TextStyle(color: Colors.blue),
+          style:
+              const TextStyle(color: Colors.blue, fontWeight: FontWeight.w500),
+        ),
+        const SizedBox(
+          height: 5,
         ),
         TextField(
           decoration: InputDecoration(

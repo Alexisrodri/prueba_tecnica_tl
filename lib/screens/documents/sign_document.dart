@@ -27,10 +27,6 @@ class BuildSignersTab extends StatelessWidget {
             style: TextStyle(fontSize: 14, color: Colors.grey),
           ),
           const SizedBox(height: 20),
-          const Text(
-            'Seleccionar certificado',
-            textAlign: TextAlign.start,
-          ),
           DropdownButtonFormField<String>(
             decoration: const InputDecoration(
               labelText: 'Seleccionar certificado',
@@ -51,6 +47,7 @@ class BuildSignersTab extends StatelessWidget {
             label: 'Contraseña',
             type: TextInputType.name,
           ),
+          const Spacer(),
           CustomButton(
             text: 'Cancelar',
             onPress: () {},

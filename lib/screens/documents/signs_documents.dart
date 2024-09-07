@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:prueba_tecnica_tl/widgets/documents/personalization_document.dart';
+import 'package:prueba_tecnica_tl/screens/documents/personalization_document.dart';
 import 'package:prueba_tecnica_tl/widgets/widgets.dart';
 
 class SingDocumentScreen extends StatefulWidget {
