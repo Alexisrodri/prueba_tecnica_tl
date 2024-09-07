@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:prueba_tecnica_tl/screens/documents/signs_documents.dart';
 import 'package:prueba_tecnica_tl/widgets/widgets.dart';
 
 class ResumeDocuments extends StatefulWidget {
@@ -13,6 +12,7 @@ class ResumeDocuments extends StatefulWidget {
 class _ResumeDocumentsState extends State<ResumeDocuments> {
   bool rememberMe = false;
   bool sendDocuments = false;
+  late PageController pageController;
 
   void _onRememberMeChanged(bool newValue) => setState(() {
         rememberMe = newValue;
@@ -43,7 +43,9 @@ class _ResumeDocumentsState extends State<ResumeDocuments> {
           ),
           CustomButton(
             text: 'Firmar otro documento',
-            onPress: () {},
+            onPress: () {
+              context.push('/sign-documents');
+            },
           ),
           CustomButton(
             text: 'Volver al Dashboard',

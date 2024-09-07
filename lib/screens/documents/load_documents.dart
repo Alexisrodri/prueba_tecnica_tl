@@ -89,7 +89,7 @@ class LoadDocuments extends StatelessWidget {
             onPress: () {},
             isDisabled: true,
           ),
-          // const Spacer(),
+          const Spacer(),
           const Text(
             'Prueba tecnica - Alex Avila',
             style: TextStyle(fontSize: 12, color: Colors.grey),
