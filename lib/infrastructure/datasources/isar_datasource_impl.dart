@@ -71,4 +71,11 @@ class IsarDatasource extends LocalStorageDatasources {
       print("Error picking or saving file: $e");
     }
   }
+
+  @override
+  Future<bool> hasDocuments() async {
+    final isar = await db;
+    final count = await isar.documents.count();
+    return count > 0;
+  }
 }
