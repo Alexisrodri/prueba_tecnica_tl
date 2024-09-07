@@ -7,10 +7,11 @@ class BuildSignersTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          // const Spacer(),
           const Text(
             'Tu Firma',
             style: TextStyle(
@@ -26,6 +27,10 @@ class BuildSignersTab extends StatelessWidget {
             style: TextStyle(fontSize: 14, color: Colors.grey),
           ),
           const SizedBox(height: 20),
+          const Text(
+            'Seleccionar certificado',
+            textAlign: TextAlign.start,
+          ),
           DropdownButtonFormField<String>(
             decoration: const InputDecoration(
               labelText: 'Seleccionar certificado',
@@ -41,15 +46,11 @@ class BuildSignersTab extends StatelessWidget {
             onChanged: (_) {},
           ),
           const SizedBox(height: 20),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Contraseña',
-              border: OutlineInputBorder(),
-              suffixIcon: Icon(Icons.visibility_off),
-            ),
-            obscureText: true,
+          // const Spacer(),
+          const CustomInput(
+            label: 'Contraseña',
+            type: TextInputType.name,
           ),
-          const SizedBox(height: 20),
           CustomButton(
             text: 'Cancelar',
             onPress: () {},

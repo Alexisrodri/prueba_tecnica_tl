@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:prueba_tecnica_tl/widgets/widgets.dart';
@@ -10,7 +9,7 @@ class LoadDocuments extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(20),
       child: Column(
         children: [
           const Flex(
@@ -18,8 +17,17 @@ class LoadDocuments extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text('Sube tus documentos y ordénalos'),
-              Icon(Icons.help),
+              SizedBox(
+                width: 5,
+              ),
+              Icon(
+                Icons.help,
+                color: Colors.black54,
+              ),
             ],
+          ),
+          const SizedBox(
+            height: 10,
           ),
           GestureDetector(
             onTap: () async {
@@ -34,8 +42,11 @@ class LoadDocuments extends StatelessWidget {
             },
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.3),
+                color: const Color(0xFFFAFAFA),
                 borderRadius: BorderRadius.circular(20),
+                boxShadow: const [
+                  BoxShadow(color: Colors.black, spreadRadius: 1),
+                ],
               ),
               height: MediaQuery.of(context).size.height / 2.5,
               width: MediaQuery.of(context).size.width / 1,
@@ -43,10 +54,19 @@ class LoadDocuments extends StatelessWidget {
                 direction: Axis.vertical,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.upload_file),
+                  Icon(
+                    Icons.upload_file_outlined,
+                    size: 80,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Text(
                     'Subir documento',
                     style: TextStyle(color: Colors.blue),
+                  ),
+                  SizedBox(
+                    height: 5,
                   ),
                   Text(
                     'PDF 20MB',
@@ -57,7 +77,7 @@ class LoadDocuments extends StatelessWidget {
             ),
           ),
           const SizedBox(
-            height: 10,
+            height: 20,
           ),
           CustomButton(
             text: 'Cancelar',
@@ -65,13 +85,18 @@ class LoadDocuments extends StatelessWidget {
             isOutlined: true,
           ),
           const SizedBox(
-            height: 10,
+            height: 20,
           ),
           CustomButton(
             text: 'Continuar',
             onPress: () {},
             isDisabled: true,
-          )
+          ),
+          const Spacer(),
+          const Text(
+            'Prueba tecnica - Alex Avila',
+            style: TextStyle(fontSize: 12, color: Colors.grey),
+          ),
         ],
       ),
     );

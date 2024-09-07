@@ -10,8 +10,8 @@ class CustomButton extends StatelessWidget {
     super.key,
     required this.text,
     this.onPress,
-    this.isOutlined = false, // Valor predeterminado: ElevatedButton
-    this.isDisabled = false, // Valor predeterminado: habilitado
+    this.isOutlined = false,
+    this.isDisabled = false,
   });
 
   @override
@@ -26,9 +26,7 @@ class CustomButton extends StatelessWidget {
                 padding: verticalPadding,
                 side: BorderSide(
                   width: 1.5,
-                  color: isDisabled
-                      ? Colors.grey
-                      : const Color(0xFF22A45D), // Gris si está deshabilitado
+                  color: isDisabled ? Colors.grey : Colors.blue,
                 ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4), // Borde casi cuadrado
@@ -40,33 +38,24 @@ class CustomButton extends StatelessWidget {
               child: Text(
                 text,
                 style: TextStyle(
-                  color: isDisabled
-                      ? Colors.grey
-                      : const Color(
-                          0xFF22A45D), // Texto gris si está deshabilitado
+                  color: isDisabled ? Colors.grey : Colors.blue,
                 ),
               ),
             )
           : ElevatedButton(
               style: ElevatedButton.styleFrom(
                 padding: verticalPadding,
-                backgroundColor: isDisabled
-                    ? Colors.grey
-                    : const Color(0xFF22A45D), // Gris si está deshabilitado
+                backgroundColor: isDisabled ? Colors.grey : Colors.blue,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4), // Borde casi cuadrado
+                  borderRadius: BorderRadius.circular(4),
                 ),
               ),
-              onPressed: isDisabled
-                  ? null
-                  : onPress, // Se deshabilita el botón si `isDisabled` es true
+              onPressed: isDisabled ? null : onPress,
               child: Text(
                 text,
                 style: TextStyle(
-                  color: isDisabled
-                      ? Colors.black38
-                      : Colors.white, // Texto más claro si está deshabilitado
+                  color: isDisabled ? Colors.black38 : Colors.white,
                 ),
               ),
             ),
