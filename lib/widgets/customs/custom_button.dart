@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
@@ -14,23 +11,16 @@ class CustomButton extends StatelessWidget {
     EdgeInsets verticalPadding = const EdgeInsets.symmetric(vertical: 16);
     return SizedBox(
       width: double.infinity,
-      child: Platform.isIOS
-          ? CupertinoButton(
-              padding: verticalPadding,
-              color: const Color(0xFF22A45D),
-              onPressed: press,
-              child: Text(text),
-            )
-          : ElevatedButton(
-              style: TextButton.styleFrom(
-                padding: verticalPadding,
-                backgroundColor: const Color(0xFF22A45D),
-                elevation: 0,
-                side: const BorderSide(width: 0, color: Colors.white),
-              ),
-              onPressed: press,
-              child: Text(text),
-            ),
+      child: ElevatedButton(
+        style: TextButton.styleFrom(
+          padding: verticalPadding,
+          backgroundColor: const Color(0xFF22A45D),
+          elevation: 0,
+          side: const BorderSide(width: 0, color: Colors.white),
+        ),
+        onPressed: press,
+        child: Text(text),
+      ),
     );
   }
 
