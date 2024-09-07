@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:prueba_tecnica_tl/widgets/widgets.dart';
 
 class LoadDocuments extends StatelessWidget {
   const LoadDocuments({super.key});
@@ -54,6 +55,22 @@ class LoadDocuments extends StatelessWidget {
                 ],
               ),
             ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          CustomButton(
+            text: 'Cancelar',
+            onPress: () {},
+            isOutlined: true,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          CustomButton(
+            text: 'Continuar',
+            onPress: () {},
+            isDisabled: true,
           )
         ],
       ),

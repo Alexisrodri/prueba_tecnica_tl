@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prueba_tecnica_tl/widgets/widgets.dart';
 
 class BuildSignersTab extends StatelessWidget {
   const BuildSignersTab({super.key});
@@ -49,33 +50,18 @@ class BuildSignersTab extends StatelessWidget {
             obscureText: true,
           ),
           const SizedBox(height: 20),
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: () {
-                    // Acción de cancelar
-                  },
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                  child: const Text('Cancelar'),
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Acción de continuar
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    backgroundColor: Colors.grey.shade300, // Botón desactivado
-                  ),
-                  child: const Text('Continuar'),
-                ),
-              ),
-            ],
+          CustomButton(
+            text: 'Cancelar',
+            onPress: () {},
+            isOutlined: true,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          CustomButton(
+            text: 'Continuar',
+            onPress: () {},
+            isDisabled: true,
           ),
           const Spacer(),
           const Text(

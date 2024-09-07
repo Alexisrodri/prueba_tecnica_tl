@@ -38,7 +38,8 @@ class PersonalizationDocument extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: CustomButton(
               text: 'texto',
-              press: () {},
+              onPress: () {},
+              // isOutlined: true,
             ),
           )
         ],
