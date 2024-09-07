@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:prueba_tecnica_tl/widgets/widgets.dart';
 
 class LoadDocuments extends StatelessWidget {
@@ -76,23 +77,19 @@ class LoadDocuments extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(
-            height: 20,
-          ),
           CustomButton(
             text: 'Cancelar',
-            onPress: () {},
+            onPress: () {
+              context.go('/home');
+            },
             isOutlined: true,
-          ),
-          const SizedBox(
-            height: 20,
           ),
           CustomButton(
             text: 'Continuar',
             onPress: () {},
             isDisabled: true,
           ),
-          const Spacer(),
+          // const Spacer(),
           const Text(
             'Prueba tecnica - Alex Avila',
             style: TextStyle(fontSize: 12, color: Colors.grey),

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:prueba_tecnica_tl/screens/documents/personalization_document.dart';
 import 'package:prueba_tecnica_tl/widgets/widgets.dart';
+
+import '../screens.dart';
 
 class SingDocumentScreen extends StatefulWidget {
   const SingDocumentScreen({super.key});
@@ -117,7 +118,7 @@ class _SingDocumentScreenState extends State<SingDocumentScreen>
                     LoadDocuments(),
                     BuildSignersTab(),
                     PersonalizationDocument(),
-                    Center(child: Text('Resumen')),
+                    ResumeDocuments(),
                   ],
                 ),
               ),

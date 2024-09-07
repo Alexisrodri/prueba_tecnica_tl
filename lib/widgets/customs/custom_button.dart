@@ -18,7 +18,8 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     EdgeInsets verticalPadding = const EdgeInsets.symmetric(vertical: 16);
 
-    return SizedBox(
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,
       child: isOutlined
           ? OutlinedButton(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:prueba_tecnica_tl/widgets/widgets.dart';
 
 class BuildSignersTab extends StatelessWidget {
@@ -50,11 +51,10 @@ class BuildSignersTab extends StatelessWidget {
           const Spacer(),
           CustomButton(
             text: 'Cancelar',
-            onPress: () {},
+            onPress: () {
+              context.go('/home');
+            },
             isOutlined: true,
-          ),
-          const SizedBox(
-            height: 10,
           ),
           CustomButton(
             text: 'Continuar',
