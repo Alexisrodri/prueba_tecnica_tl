@@ -102,7 +102,7 @@ P _documentDeserializeProp<P>(
 }
 
 Id _documentGetId(Document object) {
-  return object.isarId;
+  return object.isarId ?? Isar.autoIncrement;
 }
 
 List<IsarLinkBase<dynamic>> _documentGetLinks(Document object) {
@@ -519,8 +519,24 @@ extension DocumentQueryFilter
     });
   }
 
+  QueryBuilder<Document, Document, QAfterFilterCondition> isarIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'isarId',
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> isarIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'isarId',
+      ));
+    });
+  }
+
   QueryBuilder<Document, Document, QAfterFilterCondition> isarIdEqualTo(
-      Id value) {
+      Id? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'isarId',
@@ -530,7 +546,7 @@ extension DocumentQueryFilter
   }
 
   QueryBuilder<Document, Document, QAfterFilterCondition> isarIdGreaterThan(
-    Id value, {
+    Id? value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -543,7 +559,7 @@ extension DocumentQueryFilter
   }
 
   QueryBuilder<Document, Document, QAfterFilterCondition> isarIdLessThan(
-    Id value, {
+    Id? value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -556,8 +572,8 @@ extension DocumentQueryFilter
   }
 
   QueryBuilder<Document, Document, QAfterFilterCondition> isarIdBetween(
-    Id lower,
-    Id upper, {
+    Id? lower,
+    Id? upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {

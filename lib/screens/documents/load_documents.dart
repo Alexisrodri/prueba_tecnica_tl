@@ -1,14 +1,20 @@
 import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:prueba_tecnica_tl/providers/storages/local_storages.dart';
 import 'package:prueba_tecnica_tl/widgets/widgets.dart';
 
-class LoadDocuments extends StatelessWidget {
+import '../../models/document.dart';
+
+class LoadDocuments extends ConsumerWidget {
   const LoadDocuments({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // late IsarDatasource isarDatasource;
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -32,13 +38,29 @@ class LoadDocuments extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () async {
-              FilePickerResult? result = await FilePicker.platform.pickFiles(
-                  type: FileType.custom, allowedExtensions: ['pdf', ',p12']);
+              // await
+              final result = await FilePicker.platform.pickFiles(
+                type: FileType.custom,
+                allowedExtensions: ['pdf', 'p12'],
+              );
+
               if (result != null) {
-                File file = File(result.files.single.path!);
-                debugPrint('File-pdf:::$file');
-              } else {
-                debugPrint('User canceled the picker');
+                final filePath = result.files.single.path;
+                final fileName = result.files.single.name;
+
+                if (filePath != null) {
+                  final file = File(filePath);
+                  final fileContent = await file.readAsBytes();
+
+                  print(fileContent);
+                  final document = Document()
+                    ..fileName = fileName
+                    ..fileContent = fileContent
+                    ..createdAt = DateTime.now();
+                  ref
+                      .watch(localStorageRepositoryProvider)
+                      .addDatabase(document);
+                }
               }
             },
             child: Container(

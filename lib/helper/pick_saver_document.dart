@@ -1,11 +1,10 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:isar/isar.dart';
 
 import '../models/document.dart';
 
-Future<void> pickAndSaveDocument(Isar isar) async {
+Future<void> pickAndSaveDocument() async {
   try {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -25,12 +24,7 @@ Future<void> pickAndSaveDocument(Isar isar) async {
           ..fileContent = fileContent
           ..createdAt = DateTime.now();
 
-        await isar.writeTxn(() async {
-          if (Isar.instanceNames.isEmpty) {
-            await Isar.open([DocumentSchema], directory: '');
-            await isar.documents.put(document);
-          }
-        });
+        (document);
       }
     } else {
       print("No file selected");

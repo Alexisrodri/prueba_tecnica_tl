@@ -13,7 +13,7 @@ class LocalStorageRepositoryImpl extends LocalStorageRepository {
   }
 
   @override
-  Future<List<Document>> loadDocuments(Document document) {
-    return loadDocuments(document);
+  Future<List<Document>> loadDocuments({int limit = 10, offset}) {
+    return loadDocuments();
   }
 }
