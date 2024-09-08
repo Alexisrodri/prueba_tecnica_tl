@@ -52,7 +52,7 @@ class LoadDocuments extends ConsumerWidget {
                   final file = File(filePath);
                   final fileContent = await file.readAsBytes();
 
-                  print(fileContent);
+                  // print(fileContent);
                   final document = Document()
                     ..fileName = fileName
                     ..fileContent = fileContent
