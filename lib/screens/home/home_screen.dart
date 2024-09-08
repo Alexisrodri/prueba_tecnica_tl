@@ -11,7 +11,7 @@ class HomeScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         drawer: const Drawer(),
-        appBar: customAppbar(),
+        appBar: customAppbar(context),
         body: Stack(
           children: [
             Positioned(

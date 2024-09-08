@@ -5,3 +5,4 @@ export 'documents/load_documents.dart';
 export 'documents/personalization_document.dart';
 export 'documents/sign_document.dart';
 export 'dashboard/dashboard.dart';
+export 'profile/profile.dart';

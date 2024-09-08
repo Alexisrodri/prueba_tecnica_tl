@@ -17,7 +17,7 @@ class StorageDocumentNotifier extends StateNotifier<Map<int, Document>> {
 
   Future<List<Document>> loadLocalDocuments() async {
     final documents = await localStorageRepository.loadDocuments();
-
+    print('dbDocument:: $documents');
     final tempMoviesMap = <int, Document>{};
     for (final docs in documents) {
       tempMoviesMap[docs.isarId!] = docs;

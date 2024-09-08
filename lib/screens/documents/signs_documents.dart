@@ -25,7 +25,7 @@ class _SingDocumentScreenState extends State<SingDocumentScreen>
   Widget build(BuildContext context) {
     // final documents
     return Scaffold(
-      appBar: customAppbar(),
+      appBar: customAppbar(context),
       drawer: const Drawer(),
       body: Stack(
         children: [

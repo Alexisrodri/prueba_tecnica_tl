@@ -11,4 +11,8 @@ final appRouter = GoRouter(initialLocation: '/Home', routes: [
     path: '/sign-documents',
     builder: (context, state) => const SingDocumentScreen(),
   ),
+  GoRoute(
+    path: '/profile',
+    builder: (context, state) => const Profile(),
+  ),
 ]);
