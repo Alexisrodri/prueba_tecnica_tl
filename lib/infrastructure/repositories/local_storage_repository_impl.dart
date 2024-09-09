@@ -7,8 +7,8 @@ class LocalStorageRepositoryImpl extends LocalStorageRepository {
   LocalStorageRepositoryImpl({required this.datasource});
 
   @override
-  Future<bool> addDocument(String filename) {
-    return datasource.addDocument(filename);
+  Future<bool> hasDocumentInDb() {
+    return datasource.hasDocumentInDb();
   }
 
   @override

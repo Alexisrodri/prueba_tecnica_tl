@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,12 +8,24 @@ import 'package:prueba_tecnica_tl/screens/provider/storage/local_storage_provide
 import 'package:prueba_tecnica_tl/widgets/widgets.dart';
 import '../../models/document.dart';
 
+final hasDocumentInDb = FutureProvider.family((ref, String filename) {
+  final localStorageRepository = ref.watch(localStorageRepositoryProvider);
+  return localStorageRepository.hasDocumentInDb();
+});
+
 class LoadDocuments extends ConsumerWidget {
   const LoadDocuments({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const FilePickerDocuments();
+    final hasDocuments = ref.watch(hasDocumentInDb(''));
+    return hasDocuments.when(
+        loading: () => const CircularProgressIndicator(
+              strokeWidth: 2,
+            ),
+        error: (_, __) => throw Error(),
+        data: (data) =>
+            data ? const LocalDocuments() : const FilePickerDocuments());
   }
 }
 
@@ -78,17 +92,22 @@ class FilePickerDocuments extends ConsumerWidget {
                 type: FileType.custom,
                 allowedExtensions: ['pdf', 'p12'],
               );
-              if (result != null) {
-                final file = result.files.single;
-                final bytes = file.bytes;
-                final fileName = file.name;
 
-                if (bytes != null) {
+              if (result != null) {
+                final filePath = result.files.single.path;
+                final fileName = result.files.single.name;
+
+                if (filePath != null) {
+                  final file = File(filePath);
+                  final fileContent = await file.readAsBytes();
+
+                  // print(fileContent);
                   final document = Document(
-                    fileName: fileName,
-                    pdfBytes: bytes,
-                  );
-                  debugPrint(document.fileName);
+                      fileName: fileName, pdfBytes: fileContent.toList())
+                    ..fileName = fileName
+                    ..pdfBytes = fileContent
+                    ..pdfBytes = fileContent.toList()
+                    ..createdAt = DateTime.now();
                   await ref
                       .watch(localStorageRepositoryProvider)
                       .toogleDocument(document);

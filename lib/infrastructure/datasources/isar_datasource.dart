@@ -13,22 +13,20 @@ class IsarDatasource extends LocalStorageDatasource {
   Future<Isar> openDB() async {
     final dir = await getApplicationDocumentsDirectory();
     if (Isar.instanceNames.isEmpty) {
-      return await Isar.open([DocumentSchema],
-          directory: dir.path, inspector: true);
+      return await Isar.open([DocumentSchema], directory: dir.path);
     }
     return Future.value(Isar.getInstance());
   }
 
   @override
-  Future<bool> addDocument(String filename) async {
+  Future<bool> hasDocumentInDb() async {
     final isar = await db;
-    final existingDocument =
-        await isar.documents.where().fileNameEqualTo(filename).findFirst();
-    if (existingDocument != null) {
+    final existingDocument = await isar.documents.where().count() > 0;
+    print('existingDocument::$existingDocument');
+    if (!existingDocument) {
       return false;
     }
     return true;
-    // isar.writeTxnSync(() => isar.documents.putSync());
   }
 
   @override
@@ -40,10 +38,13 @@ class IsarDatasource extends LocalStorageDatasource {
   @override
   Future<void> toogleDocument(Document doc) async {
     final isar = await db;
-    final documentInDb =
-        await isar.documents.where().fileNameEqualTo(doc.fileName).findFirst();
-    if (documentInDb != null) {
+    final documentAdd = await isar.documents
+        .filter()
+        .fileNameContains(doc.fileName)
+        .findFirst();
+    if (documentAdd != null) {
       isar.writeTxnSync(() => isar.documents.deleteSync(doc.isarId!));
+      return;
     }
     isar.writeTxnSync(() => isar.documents.putSync(doc));
   }
