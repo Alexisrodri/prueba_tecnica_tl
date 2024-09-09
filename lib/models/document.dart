@@ -1,11 +1,10 @@
 import 'package:isar/isar.dart';
-import 'package:uuid/uuid.dart';
 part 'document.g.dart';
 
 @collection
 class Document {
-  Id? isarId = Isar.autoIncrement;
-  late String uuid;
+  Id? isarId;
+  @Index(unique: true)
   late String fileName;
   late List<int> pdfBytes;
   late DateTime createdAt;
@@ -13,5 +12,5 @@ class Document {
   Document({
     required this.fileName,
     required this.pdfBytes,
-  }) : uuid = const Uuid().v4();
+  });
 }

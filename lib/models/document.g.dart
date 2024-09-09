@@ -31,11 +31,6 @@ const DocumentSchema = CollectionSchema(
       id: 2,
       name: r'pdfBytes',
       type: IsarType.longList,
-    ),
-    r'uuid': PropertySchema(
-      id: 3,
-      name: r'uuid',
-      type: IsarType.string,
     )
   },
   estimateSize: _documentEstimateSize,
@@ -43,7 +38,21 @@ const DocumentSchema = CollectionSchema(
   deserialize: _documentDeserialize,
   deserializeProp: _documentDeserializeProp,
   idName: r'isarId',
-  indexes: {},
+  indexes: {
+    r'fileName': IndexSchema(
+      id: -6213672517780651480,
+      name: r'fileName',
+      unique: true,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'fileName',
+          type: IndexType.hash,
+          caseSensitive: true,
+        )
+      ],
+    )
+  },
   links: {},
   embeddedSchemas: {},
   getId: _documentGetId,
@@ -60,7 +69,6 @@ int _documentEstimateSize(
   var bytesCount = offsets.last;
   bytesCount += 3 + object.fileName.length * 3;
   bytesCount += 3 + object.pdfBytes.length * 8;
-  bytesCount += 3 + object.uuid.length * 3;
   return bytesCount;
 }
 
@@ -73,7 +81,6 @@ void _documentSerialize(
   writer.writeDateTime(offsets[0], object.createdAt);
   writer.writeString(offsets[1], object.fileName);
   writer.writeLongList(offsets[2], object.pdfBytes);
-  writer.writeString(offsets[3], object.uuid);
 }
 
 Document _documentDeserialize(
@@ -88,7 +95,6 @@ Document _documentDeserialize(
   );
   object.createdAt = reader.readDateTime(offsets[0]);
   object.isarId = id;
-  object.uuid = reader.readString(offsets[3]);
   return object;
 }
 
@@ -105,8 +111,6 @@ P _documentDeserializeProp<P>(
       return (reader.readString(offset)) as P;
     case 2:
       return (reader.readLongList(offset) ?? []) as P;
-    case 3:
-      return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -122,6 +126,61 @@ List<IsarLinkBase<dynamic>> _documentGetLinks(Document object) {
 
 void _documentAttach(IsarCollection<dynamic> col, Id id, Document object) {
   object.isarId = id;
+}
+
+extension DocumentByIndex on IsarCollection<Document> {
+  Future<Document?> getByFileName(String fileName) {
+    return getByIndex(r'fileName', [fileName]);
+  }
+
+  Document? getByFileNameSync(String fileName) {
+    return getByIndexSync(r'fileName', [fileName]);
+  }
+
+  Future<bool> deleteByFileName(String fileName) {
+    return deleteByIndex(r'fileName', [fileName]);
+  }
+
+  bool deleteByFileNameSync(String fileName) {
+    return deleteByIndexSync(r'fileName', [fileName]);
+  }
+
+  Future<List<Document?>> getAllByFileName(List<String> fileNameValues) {
+    final values = fileNameValues.map((e) => [e]).toList();
+    return getAllByIndex(r'fileName', values);
+  }
+
+  List<Document?> getAllByFileNameSync(List<String> fileNameValues) {
+    final values = fileNameValues.map((e) => [e]).toList();
+    return getAllByIndexSync(r'fileName', values);
+  }
+
+  Future<int> deleteAllByFileName(List<String> fileNameValues) {
+    final values = fileNameValues.map((e) => [e]).toList();
+    return deleteAllByIndex(r'fileName', values);
+  }
+
+  int deleteAllByFileNameSync(List<String> fileNameValues) {
+    final values = fileNameValues.map((e) => [e]).toList();
+    return deleteAllByIndexSync(r'fileName', values);
+  }
+
+  Future<Id> putByFileName(Document object) {
+    return putByIndex(r'fileName', object);
+  }
+
+  Id putByFileNameSync(Document object, {bool saveLinks = true}) {
+    return putByIndexSync(r'fileName', object, saveLinks: saveLinks);
+  }
+
+  Future<List<Id>> putAllByFileName(List<Document> objects) {
+    return putAllByIndex(r'fileName', objects);
+  }
+
+  List<Id> putAllByFileNameSync(List<Document> objects,
+      {bool saveLinks = true}) {
+    return putAllByIndexSync(r'fileName', objects, saveLinks: saveLinks);
+  }
 }
 
 extension DocumentQueryWhereSort on QueryBuilder<Document, Document, QWhere> {
@@ -197,6 +256,51 @@ extension DocumentQueryWhere on QueryBuilder<Document, Document, QWhereClause> {
         upper: upperIsarId,
         includeUpper: includeUpper,
       ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterWhereClause> fileNameEqualTo(
+      String fileName) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'fileName',
+        value: [fileName],
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterWhereClause> fileNameNotEqualTo(
+      String fileName) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'fileName',
+              lower: [],
+              upper: [fileName],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'fileName',
+              lower: [fileName],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'fileName',
+              lower: [fileName],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'fileName',
+              lower: [],
+              upper: [fileName],
+              includeUpper: false,
+            ));
+      }
     });
   }
 }
@@ -596,136 +700,6 @@ extension DocumentQueryFilter
       );
     });
   }
-
-  QueryBuilder<Document, Document, QAfterFilterCondition> uuidEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'uuid',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Document, Document, QAfterFilterCondition> uuidGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'uuid',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Document, Document, QAfterFilterCondition> uuidLessThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'uuid',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Document, Document, QAfterFilterCondition> uuidBetween(
-    String lower,
-    String upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'uuid',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Document, Document, QAfterFilterCondition> uuidStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'uuid',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Document, Document, QAfterFilterCondition> uuidEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'uuid',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Document, Document, QAfterFilterCondition> uuidContains(
-      String value,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'uuid',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Document, Document, QAfterFilterCondition> uuidMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'uuid',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Document, Document, QAfterFilterCondition> uuidIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'uuid',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<Document, Document, QAfterFilterCondition> uuidIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'uuid',
-        value: '',
-      ));
-    });
-  }
 }
 
 extension DocumentQueryObject
@@ -756,18 +730,6 @@ extension DocumentQuerySortBy on QueryBuilder<Document, Document, QSortBy> {
   QueryBuilder<Document, Document, QAfterSortBy> sortByFileNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'fileName', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Document, Document, QAfterSortBy> sortByUuid() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'uuid', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Document, Document, QAfterSortBy> sortByUuidDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'uuid', Sort.desc);
     });
   }
 }
@@ -809,18 +771,6 @@ extension DocumentQuerySortThenBy
       return query.addSortBy(r'isarId', Sort.desc);
     });
   }
-
-  QueryBuilder<Document, Document, QAfterSortBy> thenByUuid() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'uuid', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Document, Document, QAfterSortBy> thenByUuidDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'uuid', Sort.desc);
-    });
-  }
 }
 
 extension DocumentQueryWhereDistinct
@@ -841,13 +791,6 @@ extension DocumentQueryWhereDistinct
   QueryBuilder<Document, Document, QDistinct> distinctByPdfBytes() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'pdfBytes');
-    });
-  }
-
-  QueryBuilder<Document, Document, QDistinct> distinctByUuid(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'uuid', caseSensitive: caseSensitive);
     });
   }
 }
@@ -875,12 +818,6 @@ extension DocumentQueryProperty
   QueryBuilder<Document, List<int>, QQueryOperations> pdfBytesProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'pdfBytes');
-    });
-  }
-
-  QueryBuilder<Document, String, QQueryOperations> uuidProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'uuid');
     });
   }
 }

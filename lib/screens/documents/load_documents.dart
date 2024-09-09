@@ -1,9 +1,8 @@
-import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:prueba_tecnica_tl/screens/provider/storage/local_storage_provider.dart';
 import 'package:prueba_tecnica_tl/widgets/widgets.dart';
 import '../../models/document.dart';
 
@@ -75,26 +74,24 @@ class FilePickerDocuments extends ConsumerWidget {
           ),
           GestureDetector(
             onTap: () async {
-              // await
               final result = await FilePicker.platform.pickFiles(
                 type: FileType.custom,
                 allowedExtensions: ['pdf', 'p12'],
               );
-
               if (result != null) {
-                final filePath = result.files.single.path;
-                final fileName = result.files.single.name;
+                final file = result.files.single;
+                final bytes = file.bytes;
+                final fileName = file.name;
 
-                if (filePath != null) {
-                  final file = File(filePath);
-                  final fileContent = await file.readAsBytes();
-
+                if (bytes != null) {
                   final document = Document(
-                      fileName: fileName, pdfBytes: fileContent.toList())
-                    ..fileName = fileName
-                    ..pdfBytes = fileContent.toList()
-                    ..createdAt = DateTime.now();
-                  print('document:: ${document.uuid}');
+                    fileName: fileName,
+                    pdfBytes: bytes,
+                  );
+                  debugPrint(document.fileName);
+                  await ref
+                      .watch(localStorageRepositoryProvider)
+                      .toogleDocument(document);
                 }
               }
             },
