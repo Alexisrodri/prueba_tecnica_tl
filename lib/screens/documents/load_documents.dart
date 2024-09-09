@@ -1,14 +1,12 @@
-import 'dart:io';
-
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:prueba_tecnica_tl/screens/provider/storage/local_storage_provider.dart';
+import 'package:prueba_tecnica_tl/helper/helpers.dart';
+import 'package:prueba_tecnica_tl/screens/provider/storage.dart';
 import 'package:prueba_tecnica_tl/widgets/widgets.dart';
-import '../../models/document.dart';
 
-final hasDocumentInDb = FutureProvider.family((ref, String filename) {
+final hasDocumentInDb =
+    FutureProvider.family.autoDispose((ref, String filename) {
   final localStorageRepository = ref.watch(localStorageRepositoryProvider);
   return localStorageRepository.hasDocumentInDb();
 });
@@ -20,8 +18,10 @@ class LoadDocuments extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final hasDocuments = ref.watch(hasDocumentInDb(''));
     return hasDocuments.when(
-        loading: () => const CircularProgressIndicator(
-              strokeWidth: 2,
+        loading: () => const Center(
+              child: CircularProgressIndicator(
+                strokeWidth: 1,
+              ),
             ),
         error: (_, __) => throw Error(),
         data: (data) =>
@@ -40,16 +40,46 @@ class LocalDocumentsState extends ConsumerState<LocalDocuments> {
   @override
   void initState() {
     super.initState();
+    ref.read(documentInDb.notifier).loadDocumentsDb();
   }
 
   @override
   Widget build(BuildContext context) {
+    final docsInDB = ref.watch(documentInDb).values.toList();
     return ListView.builder(
-      itemCount: 5,
+      itemCount: docsInDB.length,
       itemBuilder: (context, index) {
-        return const ListTile(
-          title: Text('title'),
-          subtitle: Text('subtitle'),
+        return Container(
+          width: 500,
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            children: [
+              const Text('Sube tus documentos y ordénalos'),
+              SizedBox(
+                height: MediaQuery.of(context).size.height - 500,
+                child: CustomReordenableList(
+                  items: docsInDB,
+                  icon: Icons.abc_outlined,
+                ),
+              ),
+              CustomButton(
+                text: 'Cancelar',
+                onPress: () {
+                  context.go('/home');
+                },
+                isOutlined: true,
+              ),
+              CustomButton(
+                text: 'Continuar',
+                onPress: () {},
+                isDisabled: docsInDB.isEmpty,
+              ),
+              const Text(
+                'Prueba tecnica - Alex Avila',
+                style: TextStyle(fontSize: 12, color: Colors.grey),
+              ),
+            ],
+          ),
         );
       },
     );
@@ -57,14 +87,10 @@ class LocalDocumentsState extends ConsumerState<LocalDocuments> {
 }
 
 class FilePickerDocuments extends ConsumerWidget {
-  const FilePickerDocuments({
-    super.key,
-  });
+  const FilePickerDocuments({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final refdoc = ref.watch(localDocumentsProvider.notifier);
-    // print('Archivos:::$refdoc');
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -74,44 +100,17 @@ class FilePickerDocuments extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text('Sube tus documentos y ordénalos'),
-              SizedBox(
-                width: 5,
-              ),
-              Icon(
-                Icons.help,
-                color: Colors.black54,
-              ),
+              SizedBox(width: 5),
+              Icon(Icons.help, color: Colors.black54),
             ],
           ),
-          const SizedBox(
-            height: 10,
-          ),
+          const SizedBox(height: 10),
           GestureDetector(
             onTap: () async {
-              final result = await FilePicker.platform.pickFiles(
-                type: FileType.custom,
-                allowedExtensions: ['pdf', 'p12'],
-              );
-
-              if (result != null) {
-                final filePath = result.files.single.path;
-                final fileName = result.files.single.name;
-
-                if (filePath != null) {
-                  final file = File(filePath);
-                  final fileContent = await file.readAsBytes();
-
-                  // print(fileContent);
-                  final document = Document(
-                      fileName: fileName, pdfBytes: fileContent.toList())
-                    ..fileName = fileName
-                    ..pdfBytes = fileContent
-                    ..pdfBytes = fileContent.toList()
-                    ..createdAt = DateTime.now();
-                  await ref
-                      .watch(localStorageRepositoryProvider)
-                      .toogleDocument(document);
-                }
+              final document = await pickDocument();
+              if (document != null) {
+                await ref.read(documentInDb.notifier).toggleDocument(document);
+                ref.invalidate(hasDocumentInDb(''));
               }
             },
             child: Container(
@@ -119,7 +118,7 @@ class FilePickerDocuments extends ConsumerWidget {
                 color: const Color(0xFFFAFAFA),
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: const [
-                  BoxShadow(color: Colors.black, spreadRadius: 1),
+                  BoxShadow(color: Colors.black, spreadRadius: 1)
                 ],
               ),
               height: MediaQuery.of(context).size.height / 2.5,
@@ -128,24 +127,11 @@ class FilePickerDocuments extends ConsumerWidget {
                 direction: Axis.vertical,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    Icons.upload_file_outlined,
-                    size: 80,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    'Subir documento',
-                    style: TextStyle(color: Colors.blue),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    'PDF 20MB',
-                    style: TextStyle(color: Colors.grey),
-                  )
+                  Icon(Icons.upload_file_outlined, size: 80),
+                  SizedBox(height: 10),
+                  Text('Subir documento', style: TextStyle(color: Colors.blue)),
+                  SizedBox(height: 5),
+                  Text('PDF 20MB', style: TextStyle(color: Colors.grey)),
                 ],
               ),
             ),
@@ -163,10 +149,8 @@ class FilePickerDocuments extends ConsumerWidget {
             isDisabled: true,
           ),
           const Spacer(),
-          const Text(
-            'Prueba tecnica - Alex Avila',
-            style: TextStyle(fontSize: 12, color: Colors.grey),
-          ),
+          const Text('Prueba tecnica - Alex Avila',
+              style: TextStyle(fontSize: 12, color: Colors.grey)),
         ],
       ),
     );

@@ -38,11 +38,11 @@ class IsarDatasource extends LocalStorageDatasource {
   @override
   Future<void> toogleDocument(Document doc) async {
     final isar = await db;
-    final documentAdd = await isar.documents
+    final documentinDb = await isar.documents
         .filter()
-        .fileNameContains(doc.fileName)
+        .isarIdEqualTo(doc.isarId ?? 0)
         .findFirst();
-    if (documentAdd != null) {
+    if (documentinDb != null) {
       isar.writeTxnSync(() => isar.documents.deleteSync(doc.isarId!));
       return;
     }
