@@ -4,10 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:prueba_tecnica_tl/providers/storages/documents_db_provider.dart';
-import 'package:prueba_tecnica_tl/providers/storages/local_storages.dart';
 import 'package:prueba_tecnica_tl/widgets/widgets.dart';
-
 import '../../models/document.dart';
 
 class LoadDocuments extends ConsumerWidget {
@@ -15,9 +12,7 @@ class LoadDocuments extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // late IsarDatasource isarDatasource;
-
-    return const LocalDocuments();
+    return const FilePickerDocuments();
   }
 }
 
@@ -31,21 +26,17 @@ class LocalDocuments extends ConsumerStatefulWidget {
 class LocalDocumentsState extends ConsumerState<LocalDocuments> {
   @override
   void initState() {
-    ref.read(localDocumentsProvider.notifier).loadLocalDocuments();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final docs = ref.watch(localDocumentsProvider).values.toList();
-    debugPrint(docs.toString());
     return ListView.builder(
-      itemCount: docs.length,
+      itemCount: 5,
       itemBuilder: (context, index) {
-        final documents = docs[index];
-        return ListTile(
-          title: Text(documents.fileName),
-          subtitle: Text(documents.isarId!.toString()),
+        return const ListTile(
+          title: Text('title'),
+          subtitle: Text('subtitle'),
         );
       },
     );
@@ -98,15 +89,12 @@ class FilePickerDocuments extends ConsumerWidget {
                   final file = File(filePath);
                   final fileContent = await file.readAsBytes();
 
-                  // print(fileContent);
-                  final document = Document()
+                  final document = Document(
+                      fileName: fileName, pdfBytes: fileContent.toList())
                     ..fileName = fileName
-                    ..fileContent = fileContent
+                    ..pdfBytes = fileContent.toList()
                     ..createdAt = DateTime.now();
-                  await ref
-                      .watch(localStorageRepositoryProvider)
-                      .addDatabase(document);
-                  // ref.invalidate(localStorageRepositoryProvider)
+                  print('document:: ${document.uuid}');
                 }
               }
             },

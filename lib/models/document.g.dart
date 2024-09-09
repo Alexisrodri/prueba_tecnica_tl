@@ -22,14 +22,19 @@ const DocumentSchema = CollectionSchema(
       name: r'createdAt',
       type: IsarType.dateTime,
     ),
-    r'fileContent': PropertySchema(
+    r'fileName': PropertySchema(
       id: 1,
-      name: r'fileContent',
+      name: r'fileName',
+      type: IsarType.string,
+    ),
+    r'pdfBytes': PropertySchema(
+      id: 2,
+      name: r'pdfBytes',
       type: IsarType.longList,
     ),
-    r'fileName': PropertySchema(
-      id: 2,
-      name: r'fileName',
+    r'uuid': PropertySchema(
+      id: 3,
+      name: r'uuid',
       type: IsarType.string,
     )
   },
@@ -53,8 +58,9 @@ int _documentEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
-  bytesCount += 3 + object.fileContent.length * 8;
   bytesCount += 3 + object.fileName.length * 3;
+  bytesCount += 3 + object.pdfBytes.length * 8;
+  bytesCount += 3 + object.uuid.length * 3;
   return bytesCount;
 }
 
@@ -65,8 +71,9 @@ void _documentSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeDateTime(offsets[0], object.createdAt);
-  writer.writeLongList(offsets[1], object.fileContent);
-  writer.writeString(offsets[2], object.fileName);
+  writer.writeString(offsets[1], object.fileName);
+  writer.writeLongList(offsets[2], object.pdfBytes);
+  writer.writeString(offsets[3], object.uuid);
 }
 
 Document _documentDeserialize(
@@ -75,11 +82,13 @@ Document _documentDeserialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = Document();
+  final object = Document(
+    fileName: reader.readString(offsets[1]),
+    pdfBytes: reader.readLongList(offsets[2]) ?? [],
+  );
   object.createdAt = reader.readDateTime(offsets[0]);
-  object.fileContent = reader.readLongList(offsets[1]) ?? [];
-  object.fileName = reader.readString(offsets[2]);
   object.isarId = id;
+  object.uuid = reader.readString(offsets[3]);
   return object;
 }
 
@@ -93,8 +102,10 @@ P _documentDeserializeProp<P>(
     case 0:
       return (reader.readDateTime(offset)) as P;
     case 1:
-      return (reader.readLongList(offset) ?? []) as P;
+      return (reader.readString(offset)) as P;
     case 2:
+      return (reader.readLongList(offset) ?? []) as P;
+    case 3:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -242,150 +253,6 @@ extension DocumentQueryFilter
         upper: upper,
         includeUpper: includeUpper,
       ));
-    });
-  }
-
-  QueryBuilder<Document, Document, QAfterFilterCondition>
-      fileContentElementEqualTo(int value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'fileContent',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Document, Document, QAfterFilterCondition>
-      fileContentElementGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'fileContent',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Document, Document, QAfterFilterCondition>
-      fileContentElementLessThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'fileContent',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Document, Document, QAfterFilterCondition>
-      fileContentElementBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'fileContent',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<Document, Document, QAfterFilterCondition>
-      fileContentLengthEqualTo(int length) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'fileContent',
-        length,
-        true,
-        length,
-        true,
-      );
-    });
-  }
-
-  QueryBuilder<Document, Document, QAfterFilterCondition> fileContentIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'fileContent',
-        0,
-        true,
-        0,
-        true,
-      );
-    });
-  }
-
-  QueryBuilder<Document, Document, QAfterFilterCondition>
-      fileContentIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'fileContent',
-        0,
-        false,
-        999999,
-        true,
-      );
-    });
-  }
-
-  QueryBuilder<Document, Document, QAfterFilterCondition>
-      fileContentLengthLessThan(
-    int length, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'fileContent',
-        0,
-        true,
-        length,
-        include,
-      );
-    });
-  }
-
-  QueryBuilder<Document, Document, QAfterFilterCondition>
-      fileContentLengthGreaterThan(
-    int length, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'fileContent',
-        length,
-        include,
-        999999,
-        true,
-      );
-    });
-  }
-
-  QueryBuilder<Document, Document, QAfterFilterCondition>
-      fileContentLengthBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'fileContent',
-        lower,
-        includeLower,
-        upper,
-        includeUpper,
-      );
     });
   }
 
@@ -587,6 +454,278 @@ extension DocumentQueryFilter
       ));
     });
   }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition>
+      pdfBytesElementEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'pdfBytes',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition>
+      pdfBytesElementGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'pdfBytes',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition>
+      pdfBytesElementLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'pdfBytes',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition>
+      pdfBytesElementBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'pdfBytes',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> pdfBytesLengthEqualTo(
+      int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'pdfBytes',
+        length,
+        true,
+        length,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> pdfBytesIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'pdfBytes',
+        0,
+        true,
+        0,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> pdfBytesIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'pdfBytes',
+        0,
+        false,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition>
+      pdfBytesLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'pdfBytes',
+        0,
+        true,
+        length,
+        include,
+      );
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition>
+      pdfBytesLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'pdfBytes',
+        length,
+        include,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> pdfBytesLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'pdfBytes',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> uuidEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'uuid',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> uuidGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'uuid',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> uuidLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'uuid',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> uuidBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'uuid',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> uuidStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'uuid',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> uuidEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'uuid',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> uuidContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'uuid',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> uuidMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'uuid',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> uuidIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'uuid',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> uuidIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'uuid',
+        value: '',
+      ));
+    });
+  }
 }
 
 extension DocumentQueryObject
@@ -617,6 +756,18 @@ extension DocumentQuerySortBy on QueryBuilder<Document, Document, QSortBy> {
   QueryBuilder<Document, Document, QAfterSortBy> sortByFileNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'fileName', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterSortBy> sortByUuid() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'uuid', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterSortBy> sortByUuidDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'uuid', Sort.desc);
     });
   }
 }
@@ -658,6 +809,18 @@ extension DocumentQuerySortThenBy
       return query.addSortBy(r'isarId', Sort.desc);
     });
   }
+
+  QueryBuilder<Document, Document, QAfterSortBy> thenByUuid() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'uuid', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterSortBy> thenByUuidDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'uuid', Sort.desc);
+    });
+  }
 }
 
 extension DocumentQueryWhereDistinct
@@ -668,16 +831,23 @@ extension DocumentQueryWhereDistinct
     });
   }
 
-  QueryBuilder<Document, Document, QDistinct> distinctByFileContent() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'fileContent');
-    });
-  }
-
   QueryBuilder<Document, Document, QDistinct> distinctByFileName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'fileName', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Document, Document, QDistinct> distinctByPdfBytes() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'pdfBytes');
+    });
+  }
+
+  QueryBuilder<Document, Document, QDistinct> distinctByUuid(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'uuid', caseSensitive: caseSensitive);
     });
   }
 }
@@ -696,15 +866,21 @@ extension DocumentQueryProperty
     });
   }
 
-  QueryBuilder<Document, List<int>, QQueryOperations> fileContentProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'fileContent');
-    });
-  }
-
   QueryBuilder<Document, String, QQueryOperations> fileNameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'fileName');
+    });
+  }
+
+  QueryBuilder<Document, List<int>, QQueryOperations> pdfBytesProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'pdfBytes');
+    });
+  }
+
+  QueryBuilder<Document, String, QQueryOperations> uuidProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'uuid');
     });
   }
 }
