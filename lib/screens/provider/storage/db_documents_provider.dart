@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prueba_tecnica_tl/domain/repositories/local_storage_repository.dart';
 import 'package:prueba_tecnica_tl/models/document.dart';
@@ -32,12 +31,16 @@ class LocalStorageDocumentNotifier extends StateNotifier<Map<int, Document>> {
   Future<void> toggleDocument(Document document) async {
     await localStorageRepository.toogleDocument(document);
     final bool docInDb = state[document.isarId] != null;
-    print('docsInDB::$docInDb');
     if (docInDb) {
       state.remove(document.isarId);
       state = {...state};
     } else {
       state = {...state, document.isarId!: document};
     }
+  }
+
+  Future<bool> hasDocumentsInDb() async {
+    final documents = await localStorageRepository.loadDocuments();
+    return documents.isNotEmpty;
   }
 }

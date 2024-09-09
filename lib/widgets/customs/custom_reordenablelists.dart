@@ -67,6 +67,7 @@ class CustomReordenableListState extends ConsumerState<CustomReordenableList> {
                 onPressed: () async {
                   debugPrint('delete');
                   await ref.read(documentInDb.notifier).toggleDocument(item);
+                  ref.invalidate(documentInDb);
                 },
                 icon: const Icon(Icons.delete_outline)),
           ),

@@ -7,8 +7,8 @@ import 'package:prueba_tecnica_tl/widgets/widgets.dart';
 
 final hasDocumentInDb =
     FutureProvider.family.autoDispose((ref, String filename) {
-  final localStorageRepository = ref.watch(localStorageRepositoryProvider);
-  return localStorageRepository.hasDocumentInDb();
+  final localStorageRepository = ref.watch(documentInDb.notifier);
+  return localStorageRepository.hasDocumentsInDb();
 });
 
 class LoadDocuments extends ConsumerWidget {
