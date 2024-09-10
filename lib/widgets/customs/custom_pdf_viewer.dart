@@ -1,10 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class CustomPdfViewer extends StatefulWidget {
-  final String src;
+  final Uint8List pdfbytes;
 
-  const CustomPdfViewer({super.key, required this.src});
+  const CustomPdfViewer({super.key, required this.pdfbytes});
 
   @override
   State<CustomPdfViewer> createState() => _CustomPdfViewerState();
@@ -25,8 +27,8 @@ class _CustomPdfViewerState extends State<CustomPdfViewer> {
         ),
         child: Stack(
           children: [
-            SfPdfViewer.asset(
-              widget.src,
+            SfPdfViewer.memory(
+              widget.pdfbytes,
               controller: _pdfViewerController,
               pageLayoutMode: PdfPageLayoutMode.single,
               canShowPaginationDialog: false,

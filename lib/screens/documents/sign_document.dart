@@ -15,15 +15,17 @@ class BuildSignersTab extends ConsumerStatefulWidget {
 }
 
 class BuildSignersTabState extends ConsumerState<BuildSignersTab> {
-  Document? _selectedDocument;
-  String _password = '';
+  // Document? _selectedDocument;
+  // final String _password = '';
 
-  bool get _isButtonEnabled {
-    return _selectedDocument != null && _password.length > 3;
-  }
+  // bool get _isButtonEnabled {
+  //   return _selectedDocument != null && _password.length > 3;
+  // }
 
   @override
   Widget build(BuildContext context) {
+    final isButtonEnabled = ref.watch(selectedDocumentProvider) != null &&
+        ref.watch(passwordProvider).length > 3;
     final docsInDB = ref.watch(documentInDb).values.toList();
     return SingleChildScrollView(
       child: Padding(
@@ -76,9 +78,7 @@ class BuildSignersTabState extends ConsumerState<BuildSignersTab> {
                   );
                 }).toList(),
                 onChanged: (Document? doc) {
-                  setState(() {
-                    _selectedDocument = doc;
-                  });
+                  ref.read(selectedDocumentProvider.notifier).state = doc;
                 },
               ),
             ),
@@ -87,9 +87,7 @@ class BuildSignersTabState extends ConsumerState<BuildSignersTab> {
               label: 'Contraseña',
               isPassword: true,
               onChanged: (String value) {
-                setState(() {
-                  _password = value;
-                });
+                ref.read(passwordProvider.notifier).state = value;
               },
             ),
             const SizedBox(height: 20),
@@ -106,7 +104,7 @@ class BuildSignersTabState extends ConsumerState<BuildSignersTab> {
               onPress: () {
                 widget.tabController.animateTo(widget.tabController.index + 1);
               },
-              isDisabled: !_isButtonEnabled,
+              isDisabled: !isButtonEnabled,
             ),
             const SizedBox(height: 20),
             const Text(
