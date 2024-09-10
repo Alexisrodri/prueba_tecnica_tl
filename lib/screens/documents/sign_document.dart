@@ -23,9 +23,9 @@ class BuildSignersTab extends ConsumerWidget {
             const Text(
               'Tu Firma',
               style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue),
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 8),
             const Text(
@@ -34,7 +34,9 @@ class BuildSignersTab extends ConsumerWidget {
             ),
             const Text(
               'paul.quinonez@todolegal.com',
-              style: TextStyle(fontSize: 14, color: Colors.grey),
+              style: TextStyle(
+                fontSize: 14,
+              ),
             ),
             const SizedBox(height: 20),
             const Row(
@@ -42,7 +44,9 @@ class BuildSignersTab extends ConsumerWidget {
               children: [
                 Text(
                   'Seleccionar certificado',
-                  style: TextStyle(fontSize: 14, color: Colors.blue),
+                  style: TextStyle(
+                    fontSize: 14,
+                  ),
                 ),
               ],
             ),
@@ -88,7 +92,9 @@ class BuildSignersTab extends ConsumerWidget {
             const SizedBox(height: 20),
             const Text(
               'Prueba tecnica - Alex Avila',
-              style: TextStyle(fontSize: 12, color: Colors.grey),
+              style: TextStyle(
+                fontSize: 12,
+              ),
             ),
           ],
         ),

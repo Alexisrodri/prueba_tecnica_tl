@@ -9,7 +9,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        // backgroundColor: Colors.transparent,
         drawer: const Drawer(),
         appBar: customAppbar(context),
         body: Stack(
@@ -45,7 +45,10 @@ class HomeScreen extends StatelessWidget {
               // width: double.infinity,
               child: Text(
                 'Prueba tecnica : Alex avila',
-                style: TextStyle(fontSize: 12, color: Colors.grey),
+                style: TextStyle(
+                  fontSize: 12,
+                  // color: Colors.grey,
+                ),
               ),
             )
           ],

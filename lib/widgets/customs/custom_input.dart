@@ -30,8 +30,10 @@ class CustomInputState extends State<CustomInput> {
       children: [
         Text(
           widget.label,
-          style:
-              const TextStyle(color: Colors.blue, fontWeight: FontWeight.w500),
+          style: const TextStyle(
+            color: Colors.blue,
+            fontWeight: FontWeight.w500,
+          ),
         ),
         const SizedBox(
           height: 5,

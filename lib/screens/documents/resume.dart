@@ -41,7 +41,6 @@ class _ResumeDocumentsState extends State<ResumeDocuments> {
           const Icon(
             Icons.check_circle,
             size: 90,
-            color: Colors.green,
           ),
           CustomButton(
             text: 'Firmar otro documento',
@@ -78,7 +77,6 @@ class _ResumeDocumentsState extends State<ResumeDocuments> {
               const Labels(
                 text: 'Se enviaran los documentos a:',
                 size: 12,
-                color: Colors.black87,
               ),
               const SizedBox(
                 height: 10,
@@ -101,7 +99,6 @@ class _ResumeDocumentsState extends State<ResumeDocuments> {
               ),
               const Labels(
                 text: 'Documento',
-                color: Colors.black54,
                 size: 15,
                 secondText: 'Contrato de Arrendamiento',
               ),

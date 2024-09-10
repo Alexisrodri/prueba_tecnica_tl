@@ -56,7 +56,7 @@ class _SingDocumentScreenState extends State<SingDocumentScreen>
                     const Text(
                       'Firmar Documentos',
                       style: TextStyle(
-                        color: Colors.blue,
+                        // color: Colors.blue,
                         fontSize: 22,
                         fontWeight: FontWeight.w700,
                       ),
@@ -69,13 +69,13 @@ class _SingDocumentScreenState extends State<SingDocumentScreen>
                 child: Expanded(
                   child: TabBar(
                     controller: _tabController,
-                    labelColor: Colors.black,
-                    unselectedLabelColor: Colors.grey,
-                    dividerColor: Colors.transparent,
-                    indicatorColor: Colors.blue,
-                    isScrollable: true,
-                    tabAlignment: TabAlignment.start,
-                    physics: const BouncingScrollPhysics(),
+                    // labelColor: Colors.black,
+                    // unselectedLabelColor: Colors.grey,
+                    // dividerColor: Colors.transparent,
+                    // indicatorColor: Colors.blue,
+                    // isScrollable: true,
+                    // tabAlignment: TabAlignment.start,
+                    // physics: const BouncingScrollPhysics(),
                     tabs: const [
                       Tab(
                         child: Column(

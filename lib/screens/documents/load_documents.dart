@@ -89,7 +89,9 @@ class LocalDocumentsState extends ConsumerState<LocalDocuments> {
               ),
               const Text(
                 'Prueba tecnica - Alex Avila',
-                style: TextStyle(fontSize: 12, color: Colors.grey),
+                style: TextStyle(
+                  fontSize: 12,
+                ),
               ),
             ],
           ),
@@ -114,7 +116,9 @@ class FilePickerDocuments extends ConsumerWidget {
             children: [
               Text('Sube tus documentos y ordénalos'),
               SizedBox(width: 5),
-              Icon(Icons.help, color: Colors.black54),
+              Icon(
+                Icons.help,
+              ),
             ],
           ),
           const SizedBox(height: 10),
@@ -131,7 +135,9 @@ class FilePickerDocuments extends ConsumerWidget {
                 color: const Color(0xFFFAFAFA),
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: const [
-                  BoxShadow(color: Colors.black, spreadRadius: 1)
+                  BoxShadow(
+                    spreadRadius: 1,
+                  )
                 ],
               ),
               height: MediaQuery.of(context).size.height / 2.5,
@@ -142,9 +148,13 @@ class FilePickerDocuments extends ConsumerWidget {
                 children: [
                   Icon(Icons.upload_file_outlined, size: 80),
                   SizedBox(height: 10),
-                  Text('Subir documento', style: TextStyle(color: Colors.blue)),
+                  Text(
+                    'Subir documento',
+                  ),
                   SizedBox(height: 5),
-                  Text('PDF 20MB', style: TextStyle(color: Colors.grey)),
+                  Text(
+                    'PDF 20MB',
+                  ),
                 ],
               ),
             ),
@@ -163,7 +173,9 @@ class FilePickerDocuments extends ConsumerWidget {
           ),
           const Spacer(),
           const Text('Prueba tecnica - Alex Avila',
-              style: TextStyle(fontSize: 12, color: Colors.grey)),
+              style: TextStyle(
+                fontSize: 12,
+              )),
         ],
       ),
     );
