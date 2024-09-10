@@ -46,7 +46,7 @@ class _ResumeDocumentsState extends State<ResumeDocuments> {
           CustomButton(
             text: 'Firmar otro documento',
             onPress: () {
-              context.push('/sign-documents');
+              widget.tabController.animateTo(widget.tabController.index = 0);
             },
           ),
           CustomButton(
@@ -72,56 +72,72 @@ class _ResumeDocumentsState extends State<ResumeDocuments> {
             'assets/images/resume.png',
             width: 150,
           ),
-          const Labels(
-            text: 'Se enviaran los documentos a:',
-            size: 12,
-            color: Colors.black87,
-          ),
-          const Labels(
-            text: 'Paul Quiñonez',
-            size: 15,
-            secondText: '@paul.quinonez@asb.todolegal.com',
-          ),
-          const Labels(
-            text: 'Mario salas',
-            size: 15,
-            secondText: '@admin@asb.com',
-          ),
-          const Labels(
-            text: 'Documento',
-            color: Colors.black54,
-            size: 15,
-            secondText: 'Contrato de Arrendamiento',
-          ),
-          Container(
-            padding: const EdgeInsets.all(20),
-            child: CheckboxListTile(
-              value: rememberMe,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-              controlAffinity: ListTileControlAffinity.leading,
-              title: const Text.rich(
-                  style: TextStyle(fontSize: 10),
-                  TextSpan(text: 'He leído y acepto los ', children: [
-                    TextSpan(
-                        text: 'Términos del Servicio',
-                        style: TextStyle(decoration: TextDecoration.underline)),
-                    TextSpan(
-                      text: 'y',
-                    ),
-                    TextSpan(
-                        text: 'Aviso de la Política de Privacidad',
-                        style: TextStyle(decoration: TextDecoration.underline))
-                  ])
-                  // 'He leído y acepto los Términos del Servicio y Aviso de la Política de Privacidad',
-                  // style: TextStyle(fontSize: 12),
-                  ),
-              onChanged: (value) => _onRememberMeChanged(value!),
-            ),
-          ),
-          CustomButton(
-            text: 'Enviar',
-            onPress: _sendDocuments,
-            isDisabled: !rememberMe,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Labels(
+                text: 'Se enviaran los documentos a:',
+                size: 12,
+                color: Colors.black87,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Labels(
+                text: 'Paul Quiñonez',
+                size: 15,
+                secondText: '@paul.quinonez@asb.todolegal.com',
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              const Labels(
+                text: 'Mario salas',
+                size: 15,
+                secondText: '@admin@asb.com',
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              const Labels(
+                text: 'Documento',
+                color: Colors.black54,
+                size: 15,
+                secondText: 'Contrato de Arrendamiento',
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: CheckboxListTile(
+                  value: rememberMe,
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                  controlAffinity: ListTileControlAffinity.leading,
+                  title: const Text.rich(
+                      style: TextStyle(fontSize: 10),
+                      TextSpan(text: 'He leído y acepto los ', children: [
+                        TextSpan(
+                            text: 'Términos del Servicio',
+                            style: TextStyle(
+                                decoration: TextDecoration.underline)),
+                        TextSpan(
+                          text: 'y',
+                        ),
+                        TextSpan(
+                            text: 'Aviso de la Política de Privacidad',
+                            style:
+                                TextStyle(decoration: TextDecoration.underline))
+                      ])
+                      // 'He leído y acepto los Términos del Servicio y Aviso de la Política de Privacidad',
+                      // style: TextStyle(fontSize: 12),
+                      ),
+                  onChanged: (value) => _onRememberMeChanged(value!),
+                ),
+              ),
+              CustomButton(
+                text: 'Enviar',
+                onPress: _sendDocuments,
+                isDisabled: !rememberMe,
+              )
+            ],
           )
         ],
       ),

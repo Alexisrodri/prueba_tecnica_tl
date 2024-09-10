@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:prueba_tecnica_tl/screens/provider/storage.dart';
 import 'package:prueba_tecnica_tl/widgets/widgets.dart';
 
-class PersonalizationDocument extends StatelessWidget {
+class PersonalizationDocument extends ConsumerWidget {
   final TabController tabController;
 
   const PersonalizationDocument({super.key, required this.tabController});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SingleChildScrollView(
       child: Column(
         children: [

@@ -4,6 +4,7 @@ import 'package:prueba_tecnica_tl/helper/helpers.dart';
 import 'package:prueba_tecnica_tl/models/document.dart';
 
 import '../../screens/provider/storage.dart';
+import '../widgets.dart';
 
 class CustomReordenableList extends ConsumerStatefulWidget {
   final List<Document> items;
@@ -21,11 +22,13 @@ class CustomReordenableList extends ConsumerStatefulWidget {
 
 class CustomReordenableListState extends ConsumerState<CustomReordenableList> {
   late List<Document> _items;
+  late Set<String> _documentIds;
 
   @override
   void initState() {
     super.initState();
     _items = List.from(widget.items);
+    _documentIds = _items.map((item) => item.fileName).toSet();
   }
 
   @override
@@ -41,9 +44,42 @@ class CustomReordenableListState extends ConsumerState<CustomReordenableList> {
         );
       },
       onReorder: _onReorder,
-      children: _items.map((item) {
-        return Container(
-          key: ValueKey(item.isarId),
+      children: [
+        ..._items.map((item) {
+          return Container(
+            key: ValueKey(item.isarId),
+            margin: const EdgeInsets.symmetric(vertical: 5),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.blueAccent,
+                width: 0.5,
+              ),
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
+              color: Colors.white,
+            ),
+            child: ListTile(
+              leading: const Icon(
+                Icons.drag_indicator,
+                color: Colors.blue,
+              ),
+              title: Text(
+                truncateFileName(item.fileName),
+                style: const TextStyle(color: Colors.black54),
+              ),
+              subtitle: Text(formatDate(item.createdAt.toString()),
+                  style: const TextStyle(color: Colors.black54)),
+              trailing: IconButton(
+                  onPressed: () async {
+                    debugPrint('delete');
+                    await ref.read(documentInDb.notifier).toggleDocument(item);
+                    ref.invalidate(documentInDb);
+                  },
+                  icon: const Icon(Icons.delete_outline)),
+            ),
+          );
+        }),
+        Container(
+          key: UniqueKey(), // Use UniqueKey to ensure correct behavior
           margin: const EdgeInsets.symmetric(vertical: 5),
           decoration: BoxDecoration(
             border: Border.all(
@@ -54,25 +90,32 @@ class CustomReordenableListState extends ConsumerState<CustomReordenableList> {
             color: Colors.white,
           ),
           child: ListTile(
-            selectedColor: Colors.white,
-            focusColor: Colors.white,
-            leading: const Icon(Icons.drag_indicator),
-            title: Text(
-              truncateFileName(item.fileName),
-              style: const TextStyle(color: Colors.black54),
+            onTap: () async {
+              final document = await pickDocument(context);
+              if (document != null && !_documentIds.contains(document.isarId)) {
+                setState(() {
+                  _items.add(document);
+                  _documentIds.add(document.fileName);
+                });
+                await ref.read(documentInDb.notifier).toggleDocument(document);
+                ref.invalidate(hasDocumentInDb(''));
+              }
+            },
+            leading: const Icon(
+              Icons.add,
+              color: Colors.blue,
             ),
-            subtitle: Text(formatDate(item.createdAt.toString()),
-                style: const TextStyle(color: Colors.black54)),
-            trailing: IconButton(
-                onPressed: () async {
-                  debugPrint('delete');
-                  await ref.read(documentInDb.notifier).toggleDocument(item);
-                  ref.invalidate(documentInDb);
-                },
-                icon: const Icon(Icons.delete_outline)),
+            title: const Text(
+              'Añadir más documentos',
+              style: TextStyle(color: Colors.blue),
+            ),
+            trailing: const Text(
+              'Máx. 2 MB',
+              style: TextStyle(color: Colors.black54),
+            ),
           ),
-        );
-      }).toList(),
+        ),
+      ],
     );
   }
 

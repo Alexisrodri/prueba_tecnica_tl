@@ -105,7 +105,7 @@ class FilePickerDocuments extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
           const Flex(
@@ -120,7 +120,7 @@ class FilePickerDocuments extends ConsumerWidget {
           const SizedBox(height: 10),
           GestureDetector(
             onTap: () async {
-              final document = await pickDocument();
+              final document = await pickDocument(context);
               if (document != null) {
                 await ref.read(documentInDb.notifier).toggleDocument(document);
                 ref.invalidate(hasDocumentInDb(''));
