@@ -85,7 +85,7 @@ class LocalDocumentsState extends ConsumerState<LocalDocuments> {
                 isDisabled: docsInDB.isEmpty,
               ),
               const SizedBox(
-                height: 50,
+                height: 40,
               ),
               const Text(
                 'Prueba tecnica - Alex Avila',
@@ -171,7 +171,9 @@ class FilePickerDocuments extends ConsumerWidget {
             onPress: () {},
             isDisabled: true,
           ),
-          const Spacer(),
+          const SizedBox(
+            height: 30,
+          ),
           const Text('Prueba tecnica - Alex Avila',
               style: TextStyle(
                 fontSize: 12,

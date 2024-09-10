@@ -21,24 +21,24 @@ Future<Document?> pickDocument(BuildContext context) async {
         final fileContent = await file.readAsBytes();
 
         if (fileContent.length > fileSizeLimit) {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Archivo demasiado grande'),
-                content: const Text(
-                    'El archivo seleccionado excede el tamaño máximo permitido de 2 MB.'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('Aceptar'),
-                  ),
-                ],
-              );
-            },
-          );
+          // showDialog(
+          //   context: context,
+          //   builder: (BuildContext context) {
+          //     return AlertDialog(
+          //       title: const Text('Archivo demasiado grande'),
+          //       content: const Text(
+          //           'El archivo seleccionado excede el tamaño máximo permitido de 2 MB.'),
+          //       actions: [
+          //         TextButton(
+          //           onPressed: () {
+          //             Navigator.of(context).pop();
+          //           },
+          //           child: const Text('Aceptar'),
+          //         ),
+          //       ],
+          //     );
+          //   },
+          // );
           return null;
         }
 

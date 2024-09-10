@@ -22,7 +22,7 @@ class IsarDatasource extends LocalStorageDatasource {
   Future<bool> hasDocumentInDb() async {
     final isar = await db;
     final existingDocument = await isar.documents.where().count() > 0;
-    print('existingDocument::$existingDocument');
+    // print('existingDocument::$existingDocument');
     if (!existingDocument) {
       return false;
     }

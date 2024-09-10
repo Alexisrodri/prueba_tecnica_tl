@@ -79,7 +79,7 @@ class CustomReordenableListState extends ConsumerState<CustomReordenableList> {
           );
         }),
         Container(
-          key: UniqueKey(), // Use UniqueKey to ensure correct behavior
+          key: UniqueKey(),
           margin: const EdgeInsets.symmetric(vertical: 5),
           decoration: BoxDecoration(
             border: Border.all(
