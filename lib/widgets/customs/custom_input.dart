@@ -6,11 +6,13 @@ class CustomInput extends StatefulWidget {
   final bool isPassword;
   final TextInputType? type;
   final IconData icon;
+  final void Function(String)? onChanged;
 
   const CustomInput({
     super.key,
     required this.label,
     this.type,
+    this.onChanged,
     this.background = Colors.white,
     this.icon = Icons.abc,
     this.isPassword = false,
@@ -41,6 +43,7 @@ class CustomInputState extends State<CustomInput> {
         TextField(
           obscureText: widget.isPassword ? _obscureText : false,
           keyboardType: widget.type,
+          onChanged: widget.onChanged,
           decoration: InputDecoration(
             floatingLabelBehavior: FloatingLabelBehavior.always,
             hintText: widget.label,

@@ -3,16 +3,27 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:prueba_tecnica_tl/models/document.dart';
 import 'package:prueba_tecnica_tl/widgets/widgets.dart';
-
 import '../provider/providers.dart';
 
-class BuildSignersTab extends ConsumerWidget {
+class BuildSignersTab extends ConsumerStatefulWidget {
   final TabController tabController;
 
   const BuildSignersTab({super.key, required this.tabController});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  BuildSignersTabState createState() => BuildSignersTabState();
+}
+
+class BuildSignersTabState extends ConsumerState<BuildSignersTab> {
+  Document? _selectedDocument;
+  String _password = '';
+
+  bool get _isButtonEnabled {
+    return _selectedDocument != null && _password.length > 3;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final docsInDB = ref.watch(documentInDb).values.toList();
     return SingleChildScrollView(
       child: Padding(
@@ -54,7 +65,6 @@ class BuildSignersTab extends ConsumerWidget {
               padding: const EdgeInsets.only(top: 10, left: 5, right: 5),
               child: DropdownButtonFormField<Document>(
                 decoration: const InputDecoration(
-                  // labelText: 'Seleccionar certificado',
                   border: OutlineInputBorder(),
                   isDense: true,
                   alignLabelWithHint: true,
@@ -65,13 +75,22 @@ class BuildSignersTab extends ConsumerWidget {
                     child: Text(doc.fileName),
                   );
                 }).toList(),
-                onChanged: (_) {},
+                onChanged: (Document? doc) {
+                  setState(() {
+                    _selectedDocument = doc;
+                  });
+                },
               ),
             ),
             const SizedBox(height: 20),
-            const CustomInput(
+            CustomInput(
               label: 'Contraseña',
               isPassword: true,
+              onChanged: (String value) {
+                setState(() {
+                  _password = value;
+                });
+              },
             ),
             const SizedBox(height: 20),
             CustomButton(
@@ -85,9 +104,9 @@ class BuildSignersTab extends ConsumerWidget {
             CustomButton(
               text: 'Continuar',
               onPress: () {
-                tabController.animateTo(tabController.index + 1);
+                widget.tabController.animateTo(widget.tabController.index + 1);
               },
-              isDisabled: docsInDB.isEmpty,
+              isDisabled: !_isButtonEnabled,
             ),
             const SizedBox(height: 20),
             const Text(

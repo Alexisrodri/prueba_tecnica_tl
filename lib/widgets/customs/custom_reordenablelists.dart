@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prueba_tecnica_tl/helper/helpers.dart';
 import 'package:prueba_tecnica_tl/models/document.dart';
-
 import '../../screens/provider/providers.dart';
-import '../widgets.dart';
+import '../../screens/screens.dart';
 
 class CustomReordenableList extends ConsumerStatefulWidget {
   final List<Document> items;

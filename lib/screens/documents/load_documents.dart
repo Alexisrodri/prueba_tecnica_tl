@@ -61,7 +61,17 @@ class LocalDocumentsState extends ConsumerState<LocalDocuments> {
           padding: const EdgeInsets.all(10),
           child: Column(
             children: [
-              const Text('Sube tus documentos y ordénalos'),
+              const Flex(
+                direction: Axis.horizontal,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Sube tus documentos y ordénalos'),
+                  SizedBox(width: 5),
+                  Icon(
+                    Icons.help,
+                  ),
+                ],
+              ),
               SizedBox(
                 height: MediaQuery.of(context).size.height - 500,
                 child: CustomReordenableList(
