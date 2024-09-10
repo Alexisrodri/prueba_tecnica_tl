@@ -6,3 +6,4 @@ export 'documents/personalization_document.dart';
 export 'documents/sign_document.dart';
 export 'dashboard/dashboard.dart';
 export 'profile/profile.dart';
+export 'theme/theme_changer.dart';

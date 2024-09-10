@@ -14,11 +14,11 @@ class DashboardScreen extends StatelessWidget {
           Container(
             width: double.infinity,
             margin: const EdgeInsets.only(top: 10, left: 10),
-            child: const Labels(
+            child: Labels(
               text: 'Dashboard',
-              color: Color(0xFF919196),
+              color: const Color(0xFF919196),
               secondText: 'Bienvenido Paul',
-              secondColor: Colors.blueAccent,
+              secondColor: Theme.of(context).primaryColor,
             ),
           ),
           const SizedBox(

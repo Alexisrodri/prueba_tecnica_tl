@@ -41,10 +41,10 @@ class HomeScreen extends StatelessWidget {
             const Positioned(
               bottom: 20,
               // right: 20,
-              left: 80,
+              left: 90,
               // width: double.infinity,
               child: Text(
-                'Smart Contracts Suite - Un producto de Todolegal SAS - 2023',
+                'Prueba tecnica : Alex avila',
                 style: TextStyle(fontSize: 12, color: Colors.grey),
               ),
             )

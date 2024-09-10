@@ -15,4 +15,8 @@ final appRouter = GoRouter(initialLocation: '/Home', routes: [
     path: '/profile',
     builder: (context, state) => const Profile(),
   ),
+  GoRoute(
+    path: '/theme',
+    builder: (context, state) => const ThemeChangerScreen(),
+  ),
 ]);
