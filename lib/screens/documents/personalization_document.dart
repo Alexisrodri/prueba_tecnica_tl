@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:prueba_tecnica_tl/screens/provider/storage.dart';
 import 'package:prueba_tecnica_tl/widgets/widgets.dart';
 
 class PersonalizationDocument extends ConsumerWidget {
@@ -23,7 +22,10 @@ class PersonalizationDocument extends ConsumerWidget {
               alignment: CrossAxisAlignment.center,
             ),
           ),
-          const Text('Aqui va la caja de seleccion'),
+          CustomSelect(
+              name: 'Paúl Quiñonez',
+              onLeftArrowPressed: () {},
+              onRightArrowPressed: () {}),
           const CustomPdfViewer(src: 'assets/pdf/pdf1.pdf'),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
@@ -41,8 +43,10 @@ class PersonalizationDocument extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: CustomButton(
-              text: 'texto',
-              onPress: () {},
+              text: 'Finalizar',
+              onPress: () {
+                tabController.animateTo(tabController.index + 1);
+              },
               // isOutlined: true,
             ),
           )

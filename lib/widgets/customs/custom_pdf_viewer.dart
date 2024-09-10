@@ -20,8 +20,8 @@ class _CustomPdfViewerState extends State<CustomPdfViewer> {
     return Center(
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 0.6,
-          maxHeight: MediaQuery.of(context).size.height * 0.38,
+          maxWidth: MediaQuery.of(context).size.width * 0.87,
+          maxHeight: MediaQuery.of(context).size.height * 0.554,
         ),
         child: Stack(
           children: [

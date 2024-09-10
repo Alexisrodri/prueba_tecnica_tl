@@ -67,8 +67,7 @@ class BuildSignersTab extends ConsumerWidget {
             const SizedBox(height: 20),
             const CustomInput(
               label: 'Contraseña',
-              type: TextInputType.name,
-              icon: Icons.visibility_off,
+              isPassword: true,
             ),
             const SizedBox(height: 20),
             CustomButton(
@@ -84,7 +83,7 @@ class BuildSignersTab extends ConsumerWidget {
               onPress: () {
                 tabController.animateTo(tabController.index + 1);
               },
-              isDisabled: false,
+              isDisabled: docsInDB.isEmpty,
             ),
             const SizedBox(height: 20),
             const Text(

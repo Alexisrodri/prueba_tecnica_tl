@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
 
-class CustomInput extends StatelessWidget {
+class CustomInput extends StatefulWidget {
   final String label;
   final Color background;
-  // final TextEditingController textController;
   final bool isPassword;
-  final TextInputType type;
+  final TextInputType? type;
   final IconData icon;
 
   const CustomInput({
     super.key,
     required this.label,
-    required this.type,
-    // required this.textController,
+    this.type,
     this.background = Colors.white,
     this.icon = Icons.abc,
     this.isPassword = false,
   });
+
+  @override
+  CustomInputState createState() => CustomInputState();
+}
+
+class CustomInputState extends State<CustomInput> {
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +29,7 @@ class CustomInput extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          label,
+          widget.label,
           style:
               const TextStyle(color: Colors.blue, fontWeight: FontWeight.w500),
         ),
@@ -32,42 +37,29 @@ class CustomInput extends StatelessWidget {
           height: 5,
         ),
         TextField(
+          obscureText: widget.isPassword ? _obscureText : false,
+          keyboardType: widget.type,
           decoration: InputDecoration(
             floatingLabelBehavior: FloatingLabelBehavior.always,
-            // labelText: 'Label Name 1',
-            hintText: label,
-            hintStyle: const TextStyle(color: Colors.grey),
+            hintText: widget.label,
+            hintStyle: const TextStyle(color: Colors.black),
             border: const OutlineInputBorder(),
+            suffixIcon: widget.isPassword
+                ? IconButton(
+                    icon: Icon(
+                      _obscureText ? Icons.visibility_off : Icons.visibility,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
+                  )
+                : null,
           ),
         ),
       ],
-      // padding: const EdgeInsets.only(top: 5, left: 15, bottom: 5, right: 20),
-      // margin: const EdgeInsets.only(bottom: 20),
-      // decoration: BoxDecoration(
-      //     color: background,
-      //     borderRadius: BorderRadius.circular(30),
-      //     boxShadow: [
-      //       BoxShadow(
-      //           color: Colors.black.withOpacity(0.05),
-      //           offset: const Offset(0, 5),
-      //           blurRadius: 5)
-      //     ]),
-      // children: TextField(
-      //   // controller: textController,
-      //   // textAlignVertical: TextAlignVertical.center,
-      //   // autocorrect: false,
-      //   // keyboardType: TextInputType.emailAddress,
-      //   obscureText: isPassword,
-      //   decoration: InputDecoration(
-      //     // prefixIcon: Icon(icon),
-      //     // focusedBorder: InputBorder.none,
-      //     // border: InputBorder.none,
-      //     hintText: label,
-      //     labelText: 'Contraseña',
-      //     hintStyle: const TextStyle(color: Colors.grey),
-      //     floatingLabelBehavior: FloatingLabelBehavior.always,
-      //   ),
-      // ),
     );
   }
 }
