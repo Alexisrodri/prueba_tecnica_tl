@@ -3,7 +3,9 @@ import 'package:go_router/go_router.dart';
 import 'package:prueba_tecnica_tl/widgets/widgets.dart';
 
 class ResumeDocuments extends StatefulWidget {
-  const ResumeDocuments({super.key});
+  final TabController tabController;
+
+  const ResumeDocuments({super.key, required this.tabController});
 
   @override
   State<ResumeDocuments> createState() => _ResumeDocumentsState();

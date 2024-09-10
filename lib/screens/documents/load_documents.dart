@@ -12,7 +12,9 @@ final hasDocumentInDb =
 });
 
 class LoadDocuments extends ConsumerWidget {
-  const LoadDocuments({super.key});
+  final TabController tabController;
+
+  const LoadDocuments({super.key, required this.tabController});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,13 +26,18 @@ class LoadDocuments extends ConsumerWidget {
               ),
             ),
         error: (_, __) => throw Error(),
-        data: (data) =>
-            data ? const LocalDocuments() : const FilePickerDocuments());
+        data: (data) => data
+            ? LocalDocuments(
+                tabController: tabController,
+              )
+            : const FilePickerDocuments());
   }
 }
 
 class LocalDocuments extends ConsumerStatefulWidget {
-  const LocalDocuments({super.key});
+  final TabController tabController;
+
+  const LocalDocuments({super.key, required this.tabController});
 
   @override
   LocalDocumentsState createState() => LocalDocumentsState();
@@ -71,8 +78,14 @@ class LocalDocumentsState extends ConsumerState<LocalDocuments> {
               ),
               CustomButton(
                 text: 'Continuar',
-                onPress: () {},
+                onPress: () {
+                  widget.tabController
+                      .animateTo(widget.tabController.index + 1);
+                },
                 isDisabled: docsInDB.isEmpty,
+              ),
+              const SizedBox(
+                height: 50,
               ),
               const Text(
                 'Prueba tecnica - Alex Avila',

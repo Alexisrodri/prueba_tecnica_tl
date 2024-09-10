@@ -23,7 +23,6 @@ class _SingDocumentScreenState extends State<SingDocumentScreen>
 
   @override
   Widget build(BuildContext context) {
-    // final documents
     return Scaffold(
       appBar: customAppbar(context),
       drawer: const Drawer(),
@@ -66,60 +65,70 @@ class _SingDocumentScreenState extends State<SingDocumentScreen>
                 ),
               ),
               Container(
-                padding: const EdgeInsets.all(10),
-                child: TabBar(
-                  controller: _tabController,
-                  labelColor: Colors.black,
-                  unselectedLabelColor: Colors.grey,
-                  dividerColor: Colors.transparent,
-                  indicatorColor: Colors.blue,
-                  tabAlignment: TabAlignment.start,
-                  isScrollable: true,
-                  physics: const BouncingScrollPhysics(),
-                  tabs: const [
-                    Tab(
-                      child: Column(
-                        children: [
-                          Icon(Icons.document_scanner_outlined),
-                          Text('Cargar documentos')
-                        ],
+                padding: const EdgeInsets.only(top: 20, right: 20, bottom: 20),
+                child: Expanded(
+                  child: TabBar(
+                    controller: _tabController,
+                    labelColor: Colors.black,
+                    unselectedLabelColor: Colors.grey,
+                    dividerColor: Colors.transparent,
+                    indicatorColor: Colors.blue,
+                    isScrollable: true,
+                    tabAlignment: TabAlignment.start,
+                    physics: const BouncingScrollPhysics(),
+                    tabs: const [
+                      Tab(
+                        child: Column(
+                          children: [
+                            Icon(Icons.document_scanner_outlined),
+                            Text(
+                              'Cargar documentos',
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    Tab(
-                      child: Column(
-                        children: [
-                          Icon(Icons.people_outline_sharp),
-                          Text('Indicar firmantes'),
-                        ],
+                      Tab(
+                        child: Column(
+                          children: [
+                            Icon(Icons.people_outline_sharp),
+                            Text(
+                              'Indicar firmantes',
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    Tab(
-                      child: Column(
-                        children: [
-                          Icon(Icons.bookmark_add_outlined),
-                          Text('Personalizaciones'),
-                        ],
+                      Tab(
+                        child: Column(
+                          children: [
+                            Icon(Icons.bookmark_add_outlined),
+                            Text(
+                              'Personalizaciones',
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    Tab(
-                      child: Column(
-                        children: [
-                          Icon(Icons.text_snippet_outlined),
-                          Text('Resumen'),
-                        ],
+                      Tab(
+                        child: Column(
+                          children: [
+                            Icon(Icons.text_snippet_outlined),
+                            Text(
+                              'Resumen',
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               Expanded(
                 child: TabBarView(
                   controller: _tabController,
-                  children: const [
-                    LoadDocuments(),
-                    BuildSignersTab(),
-                    PersonalizationDocument(),
-                    ResumeDocuments(),
+                  children: [
+                    LoadDocuments(tabController: _tabController),
+                    BuildSignersTab(tabController: _tabController),
+                    PersonalizationDocument(tabController: _tabController),
+                    ResumeDocuments(tabController: _tabController),
                   ],
                 ),
               ),

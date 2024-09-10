@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:prueba_tecnica_tl/widgets/widgets.dart';
 
 class PersonalizationDocument extends StatelessWidget {
-  const PersonalizationDocument({super.key});
+  final TabController tabController;
+
+  const PersonalizationDocument({super.key, required this.tabController});
 
   @override
   Widget build(BuildContext context) {

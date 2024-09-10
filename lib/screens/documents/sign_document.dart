@@ -3,70 +3,77 @@ import 'package:go_router/go_router.dart';
 import 'package:prueba_tecnica_tl/widgets/widgets.dart';
 
 class BuildSignersTab extends StatelessWidget {
-  const BuildSignersTab({super.key});
+  final TabController tabController;
+
+  const BuildSignersTab({super.key, required this.tabController});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // const Spacer(),
-          const Text(
-            'Tu Firma',
-            style: TextStyle(
-                fontSize: 24, fontWeight: FontWeight.bold, color: Colors.blue),
-          ),
-          const SizedBox(height: 8),
-          const Text(
-            'Firmante Registrado: Paúl Quiñonez',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          const Text(
-            'paul.quinonez@todolegal.com',
-            style: TextStyle(fontSize: 14, color: Colors.grey),
-          ),
-          const SizedBox(height: 20),
-          DropdownButtonFormField<String>(
-            decoration: const InputDecoration(
-              labelText: 'Seleccionar certificado',
-              border: OutlineInputBorder(),
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Text(
+              'Tu Firma',
+              style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue),
             ),
-            items: <String>['Certificado 1', 'Certificado 2', 'Certificado 3']
-                .map((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-            onChanged: (_) {},
-          ),
-          const SizedBox(height: 20),
-          // const Spacer(),
-          const CustomInput(
-            label: 'Contraseña',
-            type: TextInputType.name,
-          ),
-          const Spacer(),
-          CustomButton(
-            text: 'Cancelar',
-            onPress: () {
-              context.go('/home');
-            },
-            isOutlined: true,
-          ),
-          CustomButton(
-            text: 'Continuar',
-            onPress: () {},
-            isDisabled: true,
-          ),
-          const Spacer(),
-          const Text(
-            'Prueba tecnica - Alex Avila',
-            style: TextStyle(fontSize: 12, color: Colors.grey),
-          ),
-        ],
+            const SizedBox(height: 8),
+            const Text(
+              'Firmante Registrado: Paúl Quiñonez',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const Text(
+              'paul.quinonez@todolegal.com',
+              style: TextStyle(fontSize: 14, color: Colors.grey),
+            ),
+            const SizedBox(height: 20),
+            DropdownButtonFormField<String>(
+              decoration: const InputDecoration(
+                labelText: 'Seleccionar certificado',
+                border: OutlineInputBorder(),
+              ),
+              items: <String>['Certificado 1', 'Certificado 2', 'Certificado 3']
+                  .map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              onChanged: (_) {},
+            ),
+            const SizedBox(height: 20),
+            const CustomInput(
+              label: 'Contraseña',
+              type: TextInputType.name,
+            ),
+            const SizedBox(height: 20),
+            CustomButton(
+              text: 'Cancelar',
+              onPress: () {
+                context.go('/home');
+              },
+              isOutlined: true,
+            ),
+            const SizedBox(height: 10),
+            CustomButton(
+              text: 'Continuar',
+              onPress: () {
+                tabController.animateTo(tabController.index + 1);
+              },
+              isDisabled: false, // Cambia el estado según sea necesario
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'Prueba tecnica - Alex Avila',
+              style: TextStyle(fontSize: 12, color: Colors.grey),
+            ),
+          ],
+        ),
       ),
     );
   }
