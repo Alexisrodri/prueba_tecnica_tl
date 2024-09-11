@@ -1,105 +1,37 @@
 import 'dart:io';
-
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'dart:typed_data';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 
-class PDFSignaturePosition extends StatefulWidget {
-  final Uint8List pdfBytes;
-  final Uint8List signatureBytes;
+Future<void> addSignatureToPdf(
+    Uint8List pdfBytes, Uint8List signatureBytes) async {
+  try {
+    final PdfDocument document = PdfDocument(inputBytes: pdfBytes);
 
-  const PDFSignaturePosition(
-      {super.key, required this.pdfBytes, required this.signatureBytes});
+    final PdfPage page = document.pages[0];
 
-  @override
-  PDFSignaturePositionState createState() => PDFSignaturePositionState();
-}
+    final PdfBitmap signatureImage = PdfBitmap(signatureBytes);
 
-class PDFSignaturePositionState extends State<PDFSignaturePosition> {
-  Offset? _selectedPosition;
+    const double x = 400;
+    const double y = 700;
+    const double width = 100;
+    const double height = 50;
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Select Signature Position"),
-      ),
-      body: GestureDetector(
-        onTapUp: (TapUpDetails details) {
-          setState(() {
-            _selectedPosition = details.localPosition;
-          });
-        },
-        child: Stack(
-          children: [
-            Center(
-              child: Container(
-                color: Colors.grey[300],
-                width: 300,
-                height: 400,
-                child: const Center(
-                  child: Text('Page Preview'),
-                ),
-              ),
-            ),
-            if (_selectedPosition != null)
-              Positioned(
-                left: _selectedPosition!.dx - 100,
-                top: _selectedPosition!.dy - 50,
-                child: Image.memory(
-                  widget.signatureBytes,
-                  width: 200,
-                  height: 100,
-                ),
-              ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          if (_selectedPosition != null) {
-            Navigator.pop(context, _selectedPosition);
-          }
-        },
-        child: const Icon(Icons.check),
-      ),
-    );
-  }
+    page.graphics
+        .drawImage(signatureImage, const Rect.fromLTWH(x, y, width, height));
 
-  Future<void> createPDFWithUserSelectedSignature(
-    Uint8List pdfBytes,
-    Uint8List signatureBytes,
-    Offset position,
-  ) async {
-    final pdf = pw.Document();
-    final signatureImage = pw.MemoryImage(signatureBytes);
+    final directory = await getApplicationDocumentsDirectory();
+    final String filePath = '${directory.path}/signed_document.pdf';
+    final File file = File(filePath);
 
-    // Convertir la posición en puntos de PDF (puede requerir ajuste según la resolución)
-    final pdfPosition = PdfPoint(position.dx, 400 - position.dy);
+    final List<int> pdfBytesWithSignature = await document.save();
+    await file.writeAsBytes(pdfBytesWithSignature);
 
-    pdf.addPage(
-      pw.Page(
-        build: (pw.Context context) => pw.Stack(
-          children: [
-            pw.Positioned(
-              left: pdfPosition.x,
-              bottom: pdfPosition.y,
-              child: pw.Image(signatureImage, width: 200, height: 100),
-            ),
-            pw.Center(
-              child: pw.Text('Page 1'),
-            ),
-          ],
-        ),
-      ),
-    );
+    document.dispose();
 
-    final output = await getTemporaryDirectory();
-    final file = File("${output.path}/user_signed_document.pdf");
-    await file.writeAsBytes(await pdf.save());
-
-    // print("PDF guardado en ${file.path}");
+    debugPrint('Documento guardado correctamente con la firma en $filePath');
+  } catch (e) {
+    debugPrint('Error al agregar la firma: $e');
   }
 }

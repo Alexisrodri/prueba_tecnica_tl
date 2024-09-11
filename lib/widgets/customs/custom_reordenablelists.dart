@@ -91,7 +91,8 @@ class CustomReordenableListState extends ConsumerState<CustomReordenableList> {
           child: ListTile(
             onTap: () async {
               final document = await pickDocument(context);
-              if (document != null && !_documentIds.contains(document.isarId)) {
+              if (document != null &&
+                  !_documentIds.contains(document.isarId.toString())) {
                 setState(() {
                   _items.add(document);
                   _documentIds.add(document.fileName);

@@ -3,13 +3,14 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import '../models/document.dart';
 
-Future<Document?> pickDocument(BuildContext context) async {
-  const int fileSizeLimit = 2 * 1024 * 1024; // 2 MB en bytes
+Future<Document?> pickDocument(
+    BuildContext context, List<String> extensions) async {
+  const int fileSizeLimit = 2 * 1024 * 1024;
 
   try {
     final result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
-        allowedExtensions: ['pdf', 'p12'],
+        allowedExtensions: extensions,
         compressionQuality: fileSizeLimit);
 
     if (result != null && result.files.isNotEmpty) {

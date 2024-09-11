@@ -52,7 +52,7 @@ class _CustomPdfViewerState extends State<CustomPdfViewer> {
           children: [
             if (_isLoading)
               const Center(
-                child: CircularProgressIndicator(), // Indicador de carga
+                child: CircularProgressIndicator(),
               ),
             if (_hasError)
               const Center(
@@ -66,13 +66,14 @@ class _CustomPdfViewerState extends State<CustomPdfViewer> {
                 widget.pdfbytes,
                 controller: _pdfViewerController,
                 password: widget.password,
+                initialPageNumber: 1,
                 pageLayoutMode: PdfPageLayoutMode.single,
                 canShowPaginationDialog: false,
                 canShowScrollHead: false,
                 onDocumentLoaded: (details) {
                   setState(() {
                     _totalPages = details.document.pages.count;
-                    _pdfViewerController.jumpToPage(1); // Forzar renderizado
+                    _pdfViewerController.jumpToPage(1);
                   });
                 },
                 onPageChanged: (details) {
@@ -81,11 +82,52 @@ class _CustomPdfViewerState extends State<CustomPdfViewer> {
                   });
                 },
               ),
+            Positioned(
+              top: 20,
+              right: 20,
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                decoration: BoxDecoration(
+                  color: Colors.blue.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: const Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: 'Documento Firmado\n',
+                        style: TextStyle(
+                          fontSize: 12,
+                          // color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextSpan(
+                        text: 'Electrónicamente por\n',
+                        style: TextStyle(
+                          fontSize: 12,
+                          // color: Colors.blue,
+                        ),
+                      ),
+                      TextSpan(
+                        text: 'Paul Quiñonez',
+                        style: TextStyle(
+                          fontSize: 12,
+                          // color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  textAlign: TextAlign.center, // Alinear el texto a la derecha
+                ),
+              ),
+            ),
             if (_totalPages > 0 && _currentPage > 0)
               Positioned(
                 bottom: 20,
-                left: MediaQuery.of(context).size.width * 0.5 -
-                    50, // Ajuste horizontal
+                left: MediaQuery.of(context).size.width * 0.5 - 50,
                 child: Container(
                   padding:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 10),

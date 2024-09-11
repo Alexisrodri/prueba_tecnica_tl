@@ -134,7 +134,7 @@ class FilePickerDocuments extends ConsumerWidget {
           const SizedBox(height: 10),
           GestureDetector(
             onTap: () async {
-              final document = await pickDocument(context);
+              final document = await pickDocument(context, ['pdf']);
               if (document != null) {
                 await ref.read(documentInDb.notifier).toggleDocument(document);
                 ref.invalidate(hasDocumentInDb(''));
