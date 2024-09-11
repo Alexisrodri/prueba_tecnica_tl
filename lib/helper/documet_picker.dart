@@ -8,9 +8,9 @@ Future<Document?> pickDocument(BuildContext context) async {
 
   try {
     final result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf', 'p12'],
-    );
+        type: FileType.custom,
+        allowedExtensions: ['pdf', 'p12'],
+        compressionQuality: fileSizeLimit);
 
     if (result != null && result.files.isNotEmpty) {
       final filePath = result.files.single.path;

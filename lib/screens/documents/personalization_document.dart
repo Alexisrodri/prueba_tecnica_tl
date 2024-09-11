@@ -12,20 +12,15 @@ class PersonalizationDocument extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Obtenemos el documento seleccionado desde el provider
     final selectedDocument = ref.watch(selectedDocumentProvider);
-
-    // Obtenemos la contraseña desde el provider
     final password = ref.watch(passwordProvider);
 
-    // Verificamos si hay un documento seleccionado antes de realizar la conversión
     if (selectedDocument == null) {
       return const Center(
         child: Text('No hay un documento seleccionado.'),
       );
     }
 
-    // Convertimos los bytes de List<int> a Uint8List
     final Uint8List pdfBytes = Uint8List.fromList(selectedDocument.pdfBytes);
 
     return SingleChildScrollView(
@@ -46,9 +41,9 @@ class PersonalizationDocument extends ConsumerWidget {
             onLeftArrowPressed: () {},
             onRightArrowPressed: () {},
           ),
-          // Pasamos los bytes convertidos a Uint8List al CustomPdfViewer
           CustomPdfViewer(
             pdfbytes: pdfBytes,
+            password: password,
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),

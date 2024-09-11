@@ -102,6 +102,7 @@ class BuildSignersTabState extends ConsumerState<BuildSignersTab> {
             CustomButton(
               text: 'Continuar',
               onPress: () {
+                FocusScope.of(context).unfocus();
                 widget.tabController.animateTo(widget.tabController.index + 1);
               },
               isDisabled: !isButtonEnabled,
