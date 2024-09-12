@@ -21,14 +21,14 @@ class CustomDrawer extends ConsumerWidget {
             child: ListView(
               children: [
                 DrawerListTile(
-                  title: "Dashboard",
+                  title: "Profile",
                   icon: Icons.person,
                   press: () {
                     context.push('/profile');
                   },
                 ),
                 DrawerListTile(
-                  title: "Settings",
+                  title: "Theme",
                   icon: Icons.palette_outlined,
                   press: () {
                     context.push('/theme');

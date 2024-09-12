@@ -24,7 +24,7 @@ class CustomListTile extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       decoration: BoxDecoration(
         border: Border.all(
-          color: Colors.blueAccent,
+          color: Theme.of(context).primaryColor,
           width: 0.4,
         ),
         borderRadius: const BorderRadius.all(Radius.circular(8)),
@@ -33,26 +33,26 @@ class CustomListTile extends StatelessWidget {
       child: ListTile(
         leading: Icon(
           icon,
-          color: Colors.blue,
+          color: Theme.of(context).primaryColor,
         ),
         title: Padding(
           padding: const EdgeInsets.only(bottom: 8.0),
           child: Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 14,
-              color: Colors.black54,
+              color: Theme.of(context).primaryColor,
               fontWeight: FontWeight.bold,
             ),
           ),
         ),
         subtitle: Text(
           subtitle,
-          style: const TextStyle(fontSize: 12),
+          style: TextStyle(fontSize: 12, color: Theme.of(context).hintColor),
         ),
         trailing: Icon(
           secondIcon,
-          color: Colors.blue,
+          color: Theme.of(context).primaryColor,
         ),
         onTap: onPress,
       ),

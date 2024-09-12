@@ -80,9 +80,9 @@ class CustomReordenableListState extends ConsumerState<CustomReordenableList> {
                   });
                 }
               },
-              leading: const Icon(
+              leading: Icon(
                 Icons.drag_indicator,
-                color: Colors.blue,
+                color: Theme.of(context).primaryColor,
               ),
               title: Text(
                 truncateFileName(item.fileName),
@@ -132,13 +132,13 @@ class CustomReordenableListState extends ConsumerState<CustomReordenableList> {
                 ref.invalidate(hasDocumentInDb(''));
               }
             },
-            leading: const Icon(
+            leading: Icon(
               Icons.add,
-              color: Colors.blue,
+              color: Theme.of(context).primaryColor,
             ),
-            title: const Text(
+            title: Text(
               'Añadir más documentos',
-              style: TextStyle(color: Colors.blue),
+              style: TextStyle(color: Theme.of(context).primaryColor),
             ),
             trailing: const Text(
               'Máx. 2 MB',
