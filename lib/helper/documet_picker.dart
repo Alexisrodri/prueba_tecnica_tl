@@ -16,6 +16,12 @@ Future<Document?> pickDocument(
     if (result != null && result.files.isNotEmpty) {
       final filePath = result.files.single.path;
       final fileName = result.files.single.name;
+      final fileSizeInBytes = result.files.single.size;
+      final kb = fileSizeInBytes / 1024;
+      final mb = kb / 1024;
+      final size = (mb >= 1)
+          ? '${mb.toStringAsFixed(2)} MB'
+          : '${kb.toStringAsFixed(2)} KB';
 
       if (filePath != null) {
         final file = File(filePath);
@@ -50,7 +56,9 @@ Future<Document?> pickDocument(
           ..fileName = fileName
           ..pdfBytes = fileContent
           ..pdfBytes = fileContent.toList()
-          ..createdAt = DateTime.now();
+          ..createdAt = DateTime.now()
+          ..fileSize = size
+          ..fileRoute = filePath;
         return document;
       }
     }

@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 class Labels extends StatelessWidget {
   final String text;
   final double size;
-  final Color color;
   final FontWeight weight;
   final String? secondText;
   final double? secondSize;
-  final Color? secondColor;
   final FontWeight? secondWeight;
   final String route;
   final CrossAxisAlignment? alignment;
@@ -16,11 +14,9 @@ class Labels extends StatelessWidget {
     super.key,
     required this.text,
     this.size = 25,
-    this.color = Colors.blue,
     this.weight = FontWeight.w500,
     this.secondText,
     this.secondSize = 15,
-    this.secondColor = Colors.black54,
     this.secondWeight = FontWeight.normal,
     this.route = '',
     this.alignment = CrossAxisAlignment.start,
@@ -34,7 +30,7 @@ class Labels extends StatelessWidget {
         Text(
           text,
           style: TextStyle(
-            color: color,
+            color: Theme.of(context).primaryColor,
             fontSize: size,
             fontWeight: weight,
           ),
@@ -43,7 +39,7 @@ class Labels extends StatelessWidget {
           Text(
             secondText!,
             style: TextStyle(
-              color: secondColor,
+              color: Theme.of(context).textTheme.titleSmall?.color,
               fontSize: secondSize,
               fontWeight: secondWeight,
             ),

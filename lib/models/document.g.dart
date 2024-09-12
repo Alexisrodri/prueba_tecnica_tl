@@ -27,8 +27,18 @@ const DocumentSchema = CollectionSchema(
       name: r'fileName',
       type: IsarType.string,
     ),
-    r'pdfBytes': PropertySchema(
+    r'fileRoute': PropertySchema(
       id: 2,
+      name: r'fileRoute',
+      type: IsarType.string,
+    ),
+    r'fileSize': PropertySchema(
+      id: 3,
+      name: r'fileSize',
+      type: IsarType.string,
+    ),
+    r'pdfBytes': PropertySchema(
+      id: 4,
       name: r'pdfBytes',
       type: IsarType.longList,
     )
@@ -68,6 +78,8 @@ int _documentEstimateSize(
 ) {
   var bytesCount = offsets.last;
   bytesCount += 3 + object.fileName.length * 3;
+  bytesCount += 3 + object.fileRoute.length * 3;
+  bytesCount += 3 + object.fileSize.length * 3;
   bytesCount += 3 + object.pdfBytes.length * 8;
   return bytesCount;
 }
@@ -80,7 +92,9 @@ void _documentSerialize(
 ) {
   writer.writeDateTime(offsets[0], object.createdAt);
   writer.writeString(offsets[1], object.fileName);
-  writer.writeLongList(offsets[2], object.pdfBytes);
+  writer.writeString(offsets[2], object.fileRoute);
+  writer.writeString(offsets[3], object.fileSize);
+  writer.writeLongList(offsets[4], object.pdfBytes);
 }
 
 Document _documentDeserialize(
@@ -91,9 +105,11 @@ Document _documentDeserialize(
 ) {
   final object = Document(
     fileName: reader.readString(offsets[1]),
-    pdfBytes: reader.readLongList(offsets[2]) ?? [],
+    pdfBytes: reader.readLongList(offsets[4]) ?? [],
   );
   object.createdAt = reader.readDateTime(offsets[0]);
+  object.fileRoute = reader.readString(offsets[2]);
+  object.fileSize = reader.readString(offsets[3]);
   object.isarId = id;
   return object;
 }
@@ -110,6 +126,10 @@ P _documentDeserializeProp<P>(
     case 1:
       return (reader.readString(offset)) as P;
     case 2:
+      return (reader.readString(offset)) as P;
+    case 3:
+      return (reader.readString(offset)) as P;
+    case 4:
       return (reader.readLongList(offset) ?? []) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -490,6 +510,267 @@ extension DocumentQueryFilter
     });
   }
 
+  QueryBuilder<Document, Document, QAfterFilterCondition> fileRouteEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'fileRoute',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> fileRouteGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'fileRoute',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> fileRouteLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'fileRoute',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> fileRouteBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'fileRoute',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> fileRouteStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'fileRoute',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> fileRouteEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'fileRoute',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> fileRouteContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'fileRoute',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> fileRouteMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'fileRoute',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> fileRouteIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'fileRoute',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition>
+      fileRouteIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'fileRoute',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> fileSizeEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'fileSize',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> fileSizeGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'fileSize',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> fileSizeLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'fileSize',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> fileSizeBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'fileSize',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> fileSizeStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'fileSize',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> fileSizeEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'fileSize',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> fileSizeContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'fileSize',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> fileSizeMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'fileSize',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> fileSizeIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'fileSize',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterFilterCondition> fileSizeIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'fileSize',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<Document, Document, QAfterFilterCondition> isarIdIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -732,6 +1013,30 @@ extension DocumentQuerySortBy on QueryBuilder<Document, Document, QSortBy> {
       return query.addSortBy(r'fileName', Sort.desc);
     });
   }
+
+  QueryBuilder<Document, Document, QAfterSortBy> sortByFileRoute() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fileRoute', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterSortBy> sortByFileRouteDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fileRoute', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterSortBy> sortByFileSize() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fileSize', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterSortBy> sortByFileSizeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fileSize', Sort.desc);
+    });
+  }
 }
 
 extension DocumentQuerySortThenBy
@@ -757,6 +1062,30 @@ extension DocumentQuerySortThenBy
   QueryBuilder<Document, Document, QAfterSortBy> thenByFileNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'fileName', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterSortBy> thenByFileRoute() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fileRoute', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterSortBy> thenByFileRouteDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fileRoute', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterSortBy> thenByFileSize() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fileSize', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Document, Document, QAfterSortBy> thenByFileSizeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fileSize', Sort.desc);
     });
   }
 
@@ -788,6 +1117,20 @@ extension DocumentQueryWhereDistinct
     });
   }
 
+  QueryBuilder<Document, Document, QDistinct> distinctByFileRoute(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'fileRoute', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Document, Document, QDistinct> distinctByFileSize(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'fileSize', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<Document, Document, QDistinct> distinctByPdfBytes() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'pdfBytes');
@@ -812,6 +1155,18 @@ extension DocumentQueryProperty
   QueryBuilder<Document, String, QQueryOperations> fileNameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'fileName');
+    });
+  }
+
+  QueryBuilder<Document, String, QQueryOperations> fileRouteProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'fileRoute');
+    });
+  }
+
+  QueryBuilder<Document, String, QQueryOperations> fileSizeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'fileSize');
     });
   }
 

@@ -22,6 +22,7 @@ class CustomReordenableList extends ConsumerStatefulWidget {
 class CustomReordenableListState extends ConsumerState<CustomReordenableList> {
   late List<Document> _items;
   late Set<String> _documentIds;
+  Document? _selectedDocument;
 
   @override
   void initState() {
@@ -42,21 +43,43 @@ class CustomReordenableListState extends ConsumerState<CustomReordenableList> {
           child: child,
         );
       },
-      onReorder: _onReorder,
+      onReorder: (oldIndex, newIndex) {
+        if (_items.length > 1 && newIndex < _items.length - 1) {
+          if (oldIndex < newIndex) {
+            newIndex -= 1;
+          }
+          final item = _items.removeAt(oldIndex);
+          setState(() {
+            _items.insert(newIndex, item);
+          });
+        }
+      },
       children: [
-        ..._items.map((item) {
+        ..._items.asMap().entries.map((entry) {
+          final index = entry.key;
+          final item = entry.value;
+          final bool isFirst = index == 0;
+          final bool isSelected = item == _selectedDocument;
           return Container(
             key: ValueKey(item.isarId),
             margin: const EdgeInsets.symmetric(vertical: 5),
             decoration: BoxDecoration(
               border: Border.all(
-                color: Colors.blueAccent,
+                color: isFirst ? Colors.red : Colors.blueAccent,
                 width: 0.5,
               ),
               borderRadius: const BorderRadius.all(Radius.circular(8)),
-              color: Colors.white,
+              color: isSelected ? Colors.blue.withOpacity(0.1) : Colors.white,
             ),
             child: ListTile(
+              onTap: () {
+                if (isFirst) {
+                  setState(() {
+                    _selectedDocument = item;
+                    ref.read(selectedDocumentProvider.notifier).state = item;
+                  });
+                }
+              },
               leading: const Icon(
                 Icons.drag_indicator,
                 color: Colors.blue,
@@ -69,9 +92,17 @@ class CustomReordenableListState extends ConsumerState<CustomReordenableList> {
                   style: const TextStyle(color: Colors.black54)),
               trailing: IconButton(
                   onPressed: () async {
-                    debugPrint('delete');
-                    await ref.read(documentInDb.notifier).toggleDocument(item);
-                    ref.invalidate(documentInDb);
+                    final index = _items.indexOf(item);
+                    if (index != -1) {
+                      setState(() {
+                        _items.removeAt(index);
+                        _documentIds.remove(item.fileName);
+                      });
+                      await ref
+                          .read(documentInDb.notifier)
+                          .toggleDocument(item);
+                      ref.invalidate(documentInDb);
+                    }
                   },
                   icon: const Icon(Icons.delete_outline)),
             ),
@@ -90,9 +121,9 @@ class CustomReordenableListState extends ConsumerState<CustomReordenableList> {
           ),
           child: ListTile(
             onTap: () async {
-              final document = await pickDocument(context);
+              final document = await pickDocument(context, ['pdf']);
               if (document != null &&
-                  !_documentIds.contains(document.isarId.toString())) {
+                  !_documentIds.contains(document.fileName)) {
                 setState(() {
                   _items.add(document);
                   _documentIds.add(document.fileName);
@@ -117,15 +148,5 @@ class CustomReordenableListState extends ConsumerState<CustomReordenableList> {
         ),
       ],
     );
-  }
-
-  void _onReorder(int oldIndex, int newIndex) {
-    setState(() {
-      if (oldIndex < newIndex) {
-        newIndex -= 1;
-      }
-      final item = _items.removeAt(oldIndex);
-      _items.insert(newIndex, item);
-    });
   }
 }

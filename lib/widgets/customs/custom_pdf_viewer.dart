@@ -99,7 +99,7 @@ class _CustomPdfViewerState extends State<CustomPdfViewer> {
                         text: 'Documento Firmado\n',
                         style: TextStyle(
                           fontSize: 12,
-                          // color: Colors.blue,
+                          color: Colors.black,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -107,14 +107,14 @@ class _CustomPdfViewerState extends State<CustomPdfViewer> {
                         text: 'Electrónicamente por\n',
                         style: TextStyle(
                           fontSize: 12,
-                          // color: Colors.blue,
+                          color: Colors.black,
                         ),
                       ),
                       TextSpan(
                         text: 'Paul Quiñonez',
                         style: TextStyle(
                           fontSize: 12,
-                          // color: Colors.blue,
+                          color: Colors.black,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

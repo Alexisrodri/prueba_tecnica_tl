@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:prueba_tecnica_tl/helper/pdf_signature_position.dart';
 import 'package:prueba_tecnica_tl/widgets/widgets.dart';
 import '../provider/providers.dart';
 
@@ -13,6 +14,7 @@ class PersonalizationDocument extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedDocument = ref.watch(selectedDocumentProvider);
+    final selectedCertificate = ref.watch(selectedCertificateDocumentProvider);
     final password = ref.watch(passwordProvider);
 
     if (selectedDocument == null) {
@@ -22,6 +24,8 @@ class PersonalizationDocument extends ConsumerWidget {
     }
 
     final Uint8List pdfBytes = Uint8List.fromList(selectedDocument.pdfBytes);
+    final Uint8List certificateBytes =
+        Uint8List.fromList(selectedCertificate!.pdfBytes);
 
     return SingleChildScrollView(
       child: Column(
@@ -64,6 +68,7 @@ class PersonalizationDocument extends ConsumerWidget {
               text: 'Finalizar',
               onPress: () {
                 tabController.animateTo(tabController.index + 1);
+                addSignatureToPdf(pdfBytes, certificateBytes);
               },
             ),
           ),

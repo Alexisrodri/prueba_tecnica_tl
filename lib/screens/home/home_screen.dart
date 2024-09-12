@@ -9,8 +9,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        // backgroundColor: Colors.transparent,
-        drawer: const Drawer(),
+        drawer: const CustomDrawer(),
         appBar: customAppbar(context),
         body: Stack(
           children: [
@@ -23,21 +22,7 @@ class HomeScreen extends StatelessWidget {
                 colorBlendMode: BlendMode.hue,
               ),
             ),
-            Container(
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0xFFF5FAFA),
-                    Color(0xFFF5FAFA),
-                    Color(0xE5FFFFFF),
-                  ],
-                ),
-              ),
-              child: const DashboardScreen(),
-            ),
+            const DashboardScreen(),
             const Positioned(
               bottom: 20,
               // right: 20,
@@ -47,7 +32,7 @@ class HomeScreen extends StatelessWidget {
                 'Prueba tecnica : Alex avila',
                 style: TextStyle(
                   fontSize: 12,
-                  // color: Colors.grey,
+                  // color: theme,
                 ),
               ),
             )

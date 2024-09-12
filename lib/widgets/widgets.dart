@@ -5,4 +5,5 @@ export 'customs/custom_pdf_viewer.dart';
 export 'customs/custom_button.dart';
 export 'customs/custom_input.dart';
 export 'customs/custom_reordenablelists.dart';
+export 'customs/custom_drawer.dart';
 export 'customs/custom_select.dart';

@@ -28,7 +28,7 @@ class _SingDocumentScreenState extends State<SingDocumentScreen>
     return SafeArea(
       child: Scaffold(
         appBar: customAppbar(context),
-        drawer: const Drawer(),
+        drawer: const CustomDrawer(),
         body: Column(
           children: [
             Container(

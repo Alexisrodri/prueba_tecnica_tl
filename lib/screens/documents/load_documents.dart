@@ -116,6 +116,7 @@ class FilePickerDocuments extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isDarkmode = ref.watch(themeNotifierProvider).isDarkmode;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
@@ -135,6 +136,7 @@ class FilePickerDocuments extends ConsumerWidget {
           GestureDetector(
             onTap: () async {
               final document = await pickDocument(context, ['pdf']);
+              // print('Document::$document');
               if (document != null) {
                 await ref.read(documentInDb.notifier).toggleDocument(document);
                 ref.invalidate(hasDocumentInDb(''));
@@ -142,7 +144,7 @@ class FilePickerDocuments extends ConsumerWidget {
             },
             child: Container(
               decoration: BoxDecoration(
-                color: const Color(0xFFFAFAFA),
+                color: isDarkmode ? Colors.grey : const Color(0xFFFAFAFA),
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: const [
                   BoxShadow(

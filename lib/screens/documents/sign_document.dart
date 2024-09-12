@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:prueba_tecnica_tl/models/document.dart';
+import 'package:prueba_tecnica_tl/helper/helpers.dart';
 import 'package:prueba_tecnica_tl/widgets/widgets.dart';
 import '../provider/providers.dart';
 
@@ -15,18 +15,12 @@ class BuildSignersTab extends ConsumerStatefulWidget {
 }
 
 class BuildSignersTabState extends ConsumerState<BuildSignersTab> {
-  // Document? _selectedDocument;
-  // final String _password = '';
-
-  // bool get _isButtonEnabled {
-  //   return _selectedDocument != null && _password.length > 3;
-  // }
-
   @override
   Widget build(BuildContext context) {
-    final isButtonEnabled = ref.watch(selectedDocumentProvider) != null &&
-        ref.watch(passwordProvider).length > 3;
-    final docsInDB = ref.watch(documentInDb).values.toList();
+    final isButtonEnabled =
+        ref.watch(selectedCertificateDocumentProvider) != null &&
+            ref.watch(passwordProvider).length > 5;
+    // final docsInDB = ref.watch(documentInDb).values.toList();
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -63,24 +57,21 @@ class BuildSignersTabState extends ConsumerState<BuildSignersTab> {
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10, left: 5, right: 5),
-              child: DropdownButtonFormField<Document>(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  isDense: true,
-                  alignLabelWithHint: true,
-                ),
-                items: docsInDB.map((Document doc) {
-                  return DropdownMenuItem(
-                    value: doc,
-                    child: Text(doc.fileName),
-                  );
-                }).toList(),
-                onChanged: (Document? doc) {
-                  ref.read(selectedDocumentProvider.notifier).state = doc;
-                },
-              ),
+            CustomButton(
+              text: 'Seleccionar',
+              isOutlined: true,
+              icon: Icons.keyboard_arrow_down,
+              aligntext: TextAlign.start,
+              onPress: () async {
+                final document = await pickDocument(context, ['p12', 'img']);
+                if (document != null) {
+                  await ref
+                      .read(documentInDb.notifier)
+                      .toggleDocument(document);
+                  ref.read(selectedCertificateDocumentProvider.notifier).state =
+                      document;
+                }
+              },
             ),
             const SizedBox(height: 20),
             CustomInput(
