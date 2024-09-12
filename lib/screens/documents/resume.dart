@@ -38,9 +38,10 @@ class _ResumeDocumentsState extends State<ResumeDocuments> {
             Labels(text: '¡Tus documentos'),
             Labels(text: 'se han enviado con exito!'),
           ]),
-          const Icon(
+          Icon(
             Icons.check_circle,
             size: 90,
+            color: Theme.of(context).primaryColor,
           ),
           CustomButton(
             text: 'Firmar otro documento',
@@ -106,6 +107,7 @@ class _ResumeDocumentsState extends State<ResumeDocuments> {
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 child: CheckboxListTile(
                   value: rememberMe,
+                  activeColor: Theme.of(context).primaryColor,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                   controlAffinity: ListTileControlAffinity.leading,
                   title: const Text.rich(

@@ -23,26 +23,29 @@ class CustomSelect extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const IconButton(
-            icon: Icon(Icons.chevron_left),
+          IconButton(
+            icon: const Icon(Icons.chevron_left),
             onPressed: null,
+            color: Theme.of(context).disabledColor,
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                color: Theme.of(context).indicatorColor,
+                borderRadius: BorderRadius.circular(8)),
             child: Text(
               name,
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
+                color: Theme.of(context).primaryColor,
               ),
             ),
           ),
           IconButton(
             icon: const Icon(Icons.chevron_right),
             onPressed: onRightArrowPressed,
-            color: Colors.black,
+            color: Theme.of(context).primaryColor,
           ),
         ],
       ),

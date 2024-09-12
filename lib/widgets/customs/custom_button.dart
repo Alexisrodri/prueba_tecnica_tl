@@ -89,7 +89,7 @@ class CustomButton extends StatelessWidget {
                       style: TextStyle(
                         color: isDisabled
                             ? Theme.of(context).disabledColor
-                            : Theme.of(context).primaryColor,
+                            : Theme.of(context).canvasColor,
                       ),
                     ),
                   ),

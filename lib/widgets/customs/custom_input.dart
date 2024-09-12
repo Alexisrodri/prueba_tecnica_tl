@@ -27,14 +27,13 @@ class CustomInputState extends State<CustomInput> {
 
   @override
   Widget build(BuildContext context) {
-    final isdarkMode = MediaQuery.of(context).platformBrightness;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           widget.label,
-          style: const TextStyle(
-            color: Colors.blue,
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -48,13 +47,25 @@ class CustomInputState extends State<CustomInput> {
           decoration: InputDecoration(
             floatingLabelBehavior: FloatingLabelBehavior.always,
             hintText: widget.label,
-            hintStyle: const TextStyle(color: Colors.grey),
-            border: const OutlineInputBorder(),
+            hintStyle: TextStyle(color: Theme.of(context).primaryColor),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(
+                  color: Theme.of(context).primaryColor,
+                )),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Theme.of(context).primaryColor),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Theme.of(context).primaryColor),
+            ),
             suffixIcon: widget.isPassword
                 ? IconButton(
                     icon: Icon(
                       _obscureText ? Icons.visibility_off : Icons.visibility,
-                      color: Colors.grey,
+                      color: _obscureText
+                          ? Theme.of(context).disabledColor
+                          : Theme.of(context).primaryColor,
                     ),
                     onPressed: () {
                       setState(() {

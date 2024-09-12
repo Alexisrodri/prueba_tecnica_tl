@@ -24,7 +24,7 @@ AppBar customAppbar(BuildContext context) {
     actions: [
       GestureDetector(
         onTap: () {
-          context.push('/theme');
+          context.push('/profile');
         },
         child: const Padding(
           padding: EdgeInsets.all(10),
